@@ -5,10 +5,12 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { backendUrl, currency } from '../App'
 import { assets } from '../assets/assets'
+import Loading from './Loading'
 
 const OutOfDelivery = ({ token }) => {
 
     const [outOfDelivryOrders, setOutOfDelivryOrders] = useState([])
+    const [loading, setLoading] = useState(true);
 
     const fetch_OutOfDelivryOrders = async () => {
         if (!token) {
@@ -24,6 +26,8 @@ const OutOfDelivery = ({ token }) => {
             }
         } catch (error) {
             toast.error(error.message)
+        }finally{
+            setLoading(false);
         }
     }
 
@@ -48,7 +52,7 @@ const OutOfDelivery = ({ token }) => {
             <OrdersNav />
             <h1>Out Of Delivery</h1>
             <div>
-                {
+                { loading ? <Loading/> : (
                     outOfDelivryOrders.map((order, index) => (
                         <div key={index} className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700'>
                             <img className='w-12' src={assets.parcel_icon} alt="" />
@@ -88,7 +92,7 @@ const OutOfDelivery = ({ token }) => {
                             </select>
                         </div>
                     ))
-                }
+                )}
             </div>
         </div>
     )

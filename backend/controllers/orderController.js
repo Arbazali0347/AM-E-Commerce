@@ -30,7 +30,17 @@ const allOrders = async (req, res) => {
         const orders = await orderModel.find({})
         res.json({success: true, orders})
     } catch (error) {
-        res.json({success: false, message: error.message})
+        let message = "Something went wrong, please try again later.";
+        // Agar internet / network related issue hai
+        if (
+            error.name === "MongoNetworkError" ||
+            error.message.includes("ECONNREFUSED") ||
+            error.message.includes("ENOTFOUND") ||
+            error.message.includes("ETIMEDOUT")
+        ) {
+            message = "Network issue! Please check your internet connection.";
+        }
+        res.json({success: false, message})
     }
 }
 // user order data fro frontend

@@ -7,9 +7,11 @@ import { NavLink, Link } from "react-router-dom"
 import { useEffect } from 'react'
 import { assets } from '../assets/assets'
 import OrdersNav from '../components/OrdersNav'
+import Loading from '../components/Loading'
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(true);
   const fetchAllOrders = async () => {
     if (!token) {
       return null;
@@ -23,6 +25,8 @@ const Orders = ({ token }) => {
       }
     } catch (error) {
       toast.error(error.message)
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -49,7 +53,7 @@ const Orders = ({ token }) => {
       <OrdersNav/>
       <h2>All Orders</h2>
       <div>
-        {
+        { loading ? <Loading/> : (
           orders.map((order, index) => (
             <div key={index} className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700'>
               <img className='w-12' src={assets.parcel_icon} alt="" />
@@ -89,7 +93,7 @@ const Orders = ({ token }) => {
               </select>
             </div>
           ))
-        }
+        )}
       </div>
     </div>
   )
