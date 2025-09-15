@@ -17,7 +17,6 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error("❌ Could not connect to MongoDB:", error.message);
-
     // app crash na ho iske liye, process exit kar de ya retry kar
     // process.exit(1); // agar tu app ko forcefully stop karna chahta hai
 

@@ -9,10 +9,6 @@ const OrdersNav = () => {
                     <p>ALL ORDERS</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
                 </NavLink>
-                <NavLink to="/delivered" className="py-1 px-4  flex flex-col items-center">
-                    <p>DELIVERED ORDERS</p>
-                    <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
-                </NavLink>
                 <NavLink to="/packing" className="py-1 px-4  flex flex-col items-center">
                     <p>PACKING ORDERS</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
@@ -23,6 +19,10 @@ const OrdersNav = () => {
                 </NavLink>
                 <NavLink to="/out-of-delivery" className="py-1 px-4  flex flex-col items-center">
                     <p>OUT OF DELIVERY ORDERS</p>
+                    <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
+                </NavLink>
+                <NavLink to="/delivered" className="py-1 px-4  flex flex-col items-center">
+                    <p>DELIVERED ORDERS</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
                 </NavLink>
             </ul>
