@@ -4,9 +4,13 @@ import Navbar from './components/Navbar'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import Add from './pages/Add'
 import List from './pages/List'
-import Orders from './pages/Orders'
 import Login from './components/Login'
 import {ToastContainer} from "react-toastify"
+import CompleteOrders from './components/CompleteOrders'
+import Packing from './components/Packing'
+import Delivered from './components/Delivered'
+import Orders from './pages/Orders'
+import OutOfDelivery from './components/OutOfDelivery'
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = "Rs."
@@ -31,6 +35,11 @@ const App = () => {
                 <Route path='/add' element={<Add token={token}/>} />
                 <Route path='/list' element={<List token={token} />} />
                 <Route path='/orders' element={<Orders token={token} />} />
+                <Route path='/delivered' element={<Delivered token={token}/>} />
+                <Route path='/packing' element={<Packing token={token}/>} />
+                <Route path='/placed' element={<CompleteOrders token={token} />} /> 
+                <Route path='/out-of-delivery' element={<OutOfDelivery token={token} />} /> 
+                {/* it is my mistake I did not change the name of complete into the placed */}
               </Routes>
             </div>
           </div>

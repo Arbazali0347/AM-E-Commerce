@@ -1,23 +1,24 @@
 import React from 'react'
-import { useState } from 'react'
-import axios from "axios"
+import OrdersNav from './OrdersNav'
+import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 import { backendUrl, currency } from '../App'
-import { toast, ToastContainer } from 'react-toastify'
-import { NavLink, Link } from "react-router-dom"
-import { useEffect } from 'react'
 import { assets } from '../assets/assets'
-import OrdersNav from '../components/OrdersNav'
+// this name like Placed File 
+const CompleteOrders = ({token}) => {
+  const [completeOrders, setCompleteOrders] = useState([])
 
-const Orders = ({ token }) => {
-  const [orders, setOrders] = useState([])
-  const fetchAllOrders = async () => {
+  const fetchCompleteOrders = async () => {
     if (!token) {
       return null;
     }
     try {
       const { data } = await axios.post(backendUrl + "/api/order/list", {}, { headers: { token } })
       if (data.success) {
-        setOrders(data.orders.reverse())
+        const filtered = data.orders.filter(order => order.status === "Order Placed");
+        console.log(filtered);
+        setCompleteOrders(filtered);
       } else {
         toast.error(data.message)
       }
@@ -28,29 +29,29 @@ const Orders = ({ token }) => {
 
   const statusHandler = async (event, orderId) => {
     console.log(event.target.value, orderId);
-    
+
     try {
       const { data } = await axios.post(backendUrl + "/api/order/status", { orderId, status: event.target.value }, { headers: { token } })
       if (data.success) {
-        await fetchAllOrders()
+        await fetchCompleteOrders()
         toast.success(data.message)
       }
     } catch (error) {
       toast.error(error.message)
     }
   }
-
   useEffect(() => {
-    fetchAllOrders();
+    fetchCompleteOrders();
   }, [token])
+
 
   return (
     <div>
-      <OrdersNav/>
-      <h2>All Orders</h2>
+      <OrdersNav />
+      <h1>Placed Orders</h1>
       <div>
         {
-          orders.map((order, index) => (
+          completeOrders.map((order, index) => (
             <div key={index} className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700'>
               <img className='w-12' src={assets.parcel_icon} alt="" />
               <div>
@@ -95,4 +96,4 @@ const Orders = ({ token }) => {
   )
 }
 
-export default Orders
+export default CompleteOrders

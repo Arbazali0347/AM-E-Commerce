@@ -42,8 +42,17 @@ const listProduct = async (req, res) => {
         const products = await productModel.find({})
         res.json({ success: true, products })
     } catch (error) {
-        console.log(error)
-        res.json({ success: false, message: error.message })
+        let message = "Something went wrong, please try again later.";
+        // Agar internet / network related issue hai
+        if (
+            error.name === "MongoNetworkError" ||
+            error.message.includes("ECONNREFUSED") ||
+            error.message.includes("ENOTFOUND") ||
+            error.message.includes("ETIMEDOUT")
+        ) {
+            message = "Network issue! Please check your internet connection.";
+        }
+        res.json({ success: false, message })
     }
 
 }
@@ -62,7 +71,7 @@ const singleProduct = async (req, res) => {
     try {
         const { productId } = req.body
         const product = await productModel.findById(productId)
-        res.json({success: true, product})
+        res.json({ success: true, product })
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
