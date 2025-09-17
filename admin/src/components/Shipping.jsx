@@ -6,7 +6,7 @@ import axios from 'axios'
 import { backendUrl, currency } from '../App'
 import { assets } from '../assets/assets'
 import Loading from './Loading'
-import { ordersContext } from '../context/ordersContext'
+import { ordersContext } from '../context/OrdersContext'
 // this name like Placed File 
 const Shipping = () => {
   const { orders, token, fetchAllOrders, loading } = useContext(ordersContext);

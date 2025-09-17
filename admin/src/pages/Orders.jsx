@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { assets } from '../assets/assets'
 import OrdersNav from '../components/OrdersNav'
 import Loading from '../components/Loading'
-import { ordersContext } from '../context/ordersContext'
+import { ordersContext } from '../context/OrdersContext'
 const Orders = () => {
   const {orders, fetchAllOrders, token, loading} = useContext(ordersContext);
 
