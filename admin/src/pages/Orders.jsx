@@ -1,48 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import axios from "axios"
 import { backendUrl, currency } from '../App'
 import { toast, ToastContainer } from 'react-toastify'
-import { NavLink, Link } from "react-router-dom"
 import { useEffect } from 'react'
 import { assets } from '../assets/assets'
 import OrdersNav from '../components/OrdersNav'
 import Loading from '../components/Loading'
-
-const Orders = ({ token }) => {
-  const [orders, setOrders] = useState([])
-  const [loading, setLoading] = useState(true);
-  const fetchAllOrders = async () => {
-    if (!token) {
-      return null;
-    }
-    try {
-      const { data } = await axios.post(backendUrl + "/api/order/list", {}, { headers: { token } })
-      if (data.success) {
-        setOrders(data.orders.reverse())
-      } else {
-        toast.error(data.message)
-      }
-    } catch (error) {
-      toast.error(error.message)
-    }finally{
-      setLoading(false);
-    }
-  }
+import { ordersContext } from '../context/ordersContext'
+const Orders = () => {
+  const {orders, fetchAllOrders, token, loading} = useContext(ordersContext);
 
   const statusHandler = async (event, orderId) => {
-    console.log(event.target.value, orderId);
-    
-    try {
-      const { data } = await axios.post(backendUrl + "/api/order/status", { orderId, status: event.target.value }, { headers: { token } })
-      if (data.success) {
-        await fetchAllOrders()
-        toast.success(data.message)
+      console.log(event.target.value, orderId);
+      try {
+        const { data } = await axios.post(backendUrl + "/api/order/status", { orderId, status: event.target.value }, { headers: { token } })
+        if (data.success) {
+          await fetchAllOrders();
+          toast.success(data.message)
+        }
+      } catch (error) {
+        toast.error(error.message)
       }
-    } catch (error) {
-      toast.error(error.message)
     }
-  }
 
   useEffect(() => {
     fetchAllOrders();

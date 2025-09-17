@@ -63,11 +63,23 @@ const updateStatus = async (req, res) => {
         res.json({success: false, message: error.message})
     }
 }
-
+// Delete Order by admin
+const deleteOrder = async (req, res) => {
+  try {
+    console.log("DELETE hit:", req.body);
+    const { id } = req.body;
+    await orderModel.findByIdAndDelete(id);
+    res.json({ success: true, message: "Order deleted successfully" });
+  } catch (err) {
+    console.error("Delete Order Error:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 export {
     placeOrder,
     allOrders,
     userOrders,
-    updateStatus
+    updateStatus,
+    deleteOrder
 }
 

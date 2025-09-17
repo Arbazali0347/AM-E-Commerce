@@ -8,17 +8,17 @@ import { assets } from '../assets/assets'
 import Loading from './Loading'
 import { ordersContext } from '../context/ordersContext'
 // this name like Placed File 
-const CompleteOrders = () => {
+const Shipping = () => {
   const { orders, token, fetchAllOrders, loading } = useContext(ordersContext);
-  const [completeOrders, setCompleteOrders] = useState([])
+  const [shippingOrders, setShippingOrders] = useState([])
 
-  const fetchCompleteOrders = async () => {
+  const fetchShippingOrders = async () => {
     if (!token) {
       return null;
     }
     try {
-      const filtered = orders.filter(order => order.status === "Order Placed").reverse();
-      setCompleteOrders(filtered);
+      const filtered = orders.filter(order => order.status === "Shipped").reverse();
+      setShippingOrders(filtered);
     } catch (error) {
       toast.error(error.message)
     }
@@ -36,25 +36,28 @@ const CompleteOrders = () => {
     }
   }
   useEffect(() => {
-    fetchCompleteOrders();
+    fetchShippingOrders();
   }, [token, orders])
-
-
   return (
     <div>
       <OrdersNav />
-      <h1 className="text-xl font-semibold mb-4">Placed Orders</h1>
+      <h1 className="text-xl font-semibold mb-4">Shipped</h1>
 
       <div>
         {loading ? (
           <Loading />
         ) : (
-          completeOrders.map((order, index) => (
+          shippingOrders.map((order, index) => (
             <div
               key={index}
-              className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700 rounded-2xl shadow-sm hover:shadow-md transition"
+              className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] 
+                         lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 
+                         items-start border-2 border-gray-200 
+                         p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm 
+                         text-gray-700 rounded-2xl shadow-sm 
+                         hover:shadow-md transition"
             >
-              {/* Icon */}
+              {/* Parcel Icon */}
               <img className="w-12" src={assets.parcel_icon} alt="parcel icon" />
 
               {/* Order Details */}
@@ -114,4 +117,4 @@ const CompleteOrders = () => {
   )
 }
 
-export default CompleteOrders
+export default Shipping

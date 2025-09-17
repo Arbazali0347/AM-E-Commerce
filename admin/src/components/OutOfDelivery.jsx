@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useState } from 'react'
 import OrdersNav from './OrdersNav'
 import { toast } from 'react-toastify'
@@ -6,38 +6,29 @@ import axios from 'axios'
 import { backendUrl, currency } from '../App'
 import { assets } from '../assets/assets'
 import Loading from './Loading'
+import { ordersContext } from '../context/ordersContext'
 
-const OutOfDelivery = ({ token }) => {
-
+const OutOfDelivery = () => {
     const [outOfDelivryOrders, setOutOfDelivryOrders] = useState([])
-    const [loading, setLoading] = useState(true);
+    const { orders, fetchAllOrders, token, loading } = useContext(ordersContext);
 
     const fetch_OutOfDelivryOrders = async () => {
         if (!token) {
             return null;
         }
         try {
-            const { data } = await axios.post(backendUrl + "/api/order/list", {}, { headers: { token } })
-            if (data.success) {
-                const filtered = data.orders.filter(order => order.status === "Out for delivery");
-                setOutOfDelivryOrders(filtered);
-            } else {
-                toast.error(data.message)
-            }
+            const filtered = orders.filter(order => order.status === "Out for delivery");
+            setOutOfDelivryOrders(filtered);
         } catch (error) {
             toast.error(error.message)
-        }finally{
-            setLoading(false);
         }
     }
 
     const statusHandler = async (event, orderId) => {
-        console.log(event.target.value, orderId);
-
         try {
             const { data } = await axios.post(backendUrl + "/api/order/status", { orderId, status: event.target.value }, { headers: { token } })
             if (data.success) {
-                await fetch_OutOfDelivryOrders()
+                await fetchAllOrders();
                 toast.success(data.message)
             }
         } catch (error) {
@@ -46,56 +37,86 @@ const OutOfDelivery = ({ token }) => {
     }
     useEffect(() => {
         fetch_OutOfDelivryOrders();
-    }, [token])
+    }, [token, orders])
     return (
-        <div>
-            <OrdersNav />
-            <h1>Out Of Delivery</h1>
+        (
             <div>
-                { loading ? <Loading/> : (
-                    outOfDelivryOrders.map((order, index) => (
-                        <div key={index} className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700'>
-                            <img className='w-12' src={assets.parcel_icon} alt="" />
-                            <div>
+                <OrdersNav />
+                <h1 className="text-xl font-semibold mb-4">Out for Delivery</h1>
+                <div>
+                    {loading ? (
+                        <Loading />
+                    ) : (
+                        outOfDelivryOrders.map((order, index) => (
+                            <div
+                                key={index}
+                                className="grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] 
+                         lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 
+                         items-start border-2 border-gray-200 
+                         p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm 
+                         text-gray-700 rounded-2xl shadow-sm 
+                         hover:shadow-md transition"
+                            >
+                                {/* Parcel Icon */}
+                                <img className="w-12" src={assets.parcel_icon} alt="parcel icon" />
+
+                                {/* Order Details */}
                                 <div>
-                                    {
-                                        // fixed: use optional chaining, correct field name `quantity`, and unique key
-                                        order.items?.map((item, itemIdx) => {
-                                            return (
-                                                <p className='py-0.5' key={`${index}-${itemIdx}`}>
-                                                    {item.name} x Quantity:  {item.quantity ?? item.quanitity}  - <span>{item.size} </span>
-                                                </p>
-                                            )
-                                        })
-                                    }
+                                    <div>
+                                        {order.items?.map((item, itemIdx) => (
+                                            <p className="py-0.5" key={`${index}-${itemIdx}`}>
+                                                {item.name} x Quantity: {item.quantity ?? item.quanitity} -{" "}
+                                                <span>{item.size}</span>
+                                            </p>
+                                        ))}
+                                    </div>
+
+                                    <p className="mt-3 mb-2 font-medium">
+                                        {order.address.firstName + " " + order.address.lastName}
+                                    </p>
+
+                                    <div>
+                                        <p>{order.address.street},</p>
+                                        <p>
+                                            {order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipCode}
+                                        </p>
+                                    </div>
+                                    <p>{order.address.phone}</p>
                                 </div>
-                                <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.lastName}</p>
+
+                                {/* Payment & Meta */}
                                 <div>
-                                    <p>{order.address.street + ","}</p>
-                                    <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipCode}</p>
+                                    <p className="text-sm sm:text-[15px]">Items : {order.items.length}</p>
+                                    <p className="mt-3">Method : {order.paymentMethod}</p>
+                                    <p>Payment : {order.payment ? "Done ✅" : "Pending ⏳"}</p>
+                                    <p>Date : {new Date(order.date).toLocaleDateString()}</p>
                                 </div>
-                                <p>{order.address.phone}</p>
+
+                                {/* Price */}
+                                <p className="text-sm sm:text-[15px] font-medium">
+                                    {currency}{order.amount}
+                                </p>
+
+                                {/* Status + Delete */}
+                                <div className="flex flex-col sm:flex-row gap-2">
+                                    <select
+                                        onChange={(event) => statusHandler(event, order._id)}
+                                        value={order.status}
+                                        className="p-2 font-semibold rounded-lg border"
+                                    >
+                                        <option value="Order Placed">Order Placed</option>
+                                        <option value="Packing">Packing</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Out for delivery">Out for delivery</option>
+                                        <option value="Delivered">Delivered</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div>
-                                <p className='text-sm sm:text-[15px]'>Items : {order.items.length}</p>
-                                <p className='mt-3'>Method : {order.paymentMethod}</p>
-                                <p>Payment : {order.payment ? "Done" : "Pending"}</p>
-                                <p>Date : {new Date(order.date).toLocaleDateString()}</p>
-                            </div>
-                            <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-                            <select onChange={(event) => statusHandler(event, order._id)} value={order.status} className='p-2 font-semibold'>
-                                <option value="Order Placed">Order Placed</option>
-                                <option value="Packing">Packing</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Out for delivery">Out for delivery</option>
-                                <option value="Delivered">Delivered</option>
-                            </select>
-                        </div>
-                    ))
-                )}
+                        ))
+                    )}
+                </div>
             </div>
-        </div>
-    )
+        ))
 }
 
 export default OutOfDelivery;

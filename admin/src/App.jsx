@@ -11,6 +11,7 @@ import Packing from './components/Packing'
 import Delivered from './components/Delivered'
 import Orders from './pages/Orders'
 import OutOfDelivery from './components/OutOfDelivery'
+import Shipping from './components/Shipping'
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = "Rs."
@@ -39,6 +40,7 @@ const App = () => {
                 <Route path='/packing' element={<Packing token={token}/>} />
                 <Route path='/placed' element={<CompleteOrders token={token} />} /> 
                 <Route path='/out-of-delivery' element={<OutOfDelivery token={token} />} /> 
+                <Route path='/shipping' element={<Shipping token={token} />} /> 
                 {/* it is my mistake I did not change the name of complete into the placed */}
               </Routes>
             </div>
