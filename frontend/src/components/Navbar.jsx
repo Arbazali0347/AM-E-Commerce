@@ -4,7 +4,8 @@ import { NavLink, Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 👉 Mobile sidebar ke liye
+  const [showDropdown, setShowDropdown] = useState(false); // 👉 Profile dropdown ke liye
 
   const {
     setShowSearch,
@@ -41,16 +42,14 @@ const Navbar = () => {
               key={i}
               to={path}
               className={({ isActive }) =>
-                `relative flex flex-col items-center transition duration-300 hover:text-black ${isActive ? "text-black font-semibold" : "text-gray-600"
+                `relative flex flex-col items-center transition duration-300 hover:text-black ${
+                  isActive ? "text-black font-semibold" : "text-gray-600"
                 }`
               }
             >
               <p>
-                {path === "/"
-                  ? "HOME"
-                  : path.replace("/", "").toUpperCase()}
+                {path === "/" ? "HOME" : path.replace("/", "").toUpperCase()}
               </p>
-              <span className="absolute -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
             </NavLink>
           ))}
         </ul>
@@ -66,29 +65,39 @@ const Navbar = () => {
           />
 
           {/* Profile */}
-          {/* Profile */}
-          <div className="relative group">
+          <div className="relative">
             <img
-              onClick={() => (token ? null : navigate("/login"))}
+              onClick={() => {
+                if (token) {
+                  setShowDropdown(!showDropdown); // 👉 Dropdown toggle on click (works on mobile)
+                } else {
+                  navigate("/login"); // 👉 Agar login nahi hai to login page
+                }
+              }}
               src={assets.profile_icon}
               alt="Profile"
               className="w-6 cursor-pointer"
             />
 
             {/* Dropdown */}
-            {token && (
+            {token && showDropdown && (
               <div
-                className="absolute right-0 top-full hidden group-hover:flex 
-                 flex-col gap-2 w-40 py-3 px-5 bg-white shadow-lg rounded-lg text-gray-600"
+                className="absolute right-0 top-full mt-2 flex flex-col gap-2 w-40 py-3 px-5 bg-white shadow-lg rounded-lg text-gray-600"
               >
                 <p
-                  onClick={() => navigate("/orders")}
+                  onClick={() => {
+                    navigate("/orders");
+                    setShowDropdown(false); // 👉 Close dropdown on click
+                  }}
                   className="cursor-pointer hover:text-black"
                 >
                   Orders
                 </p>
                 <p
-                  onClick={logoutHandler}
+                  onClick={() => {
+                    logoutHandler();
+                    setShowDropdown(false);
+                  }}
                   className="cursor-pointer hover:text-black"
                 >
                   Logout
@@ -121,8 +130,9 @@ const Navbar = () => {
 
       {/* Sidebar Menu (Mobile) */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 z-50 ${visible ? "w-3/4 sm:w-1/2" : "w-0"
-          }`}
+        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 z-50 ${
+          visible ? "w-3/4 sm:w-1/2" : "w-0"
+        }`}
       >
         <div className="flex flex-col text-gray-700 h-full">
           <div
@@ -141,9 +151,10 @@ const Navbar = () => {
               key={i}
               onClick={() => setVisible(false)}
               className={({ isActive }) =>
-                `py-3 pl-6 border-b transition duration-300 ${isActive
-                  ? "bg-black text-white font-semibold"
-                  : "hover:bg-gray-100"
+                `py-3 pl-6 border-b transition duration-300 ${
+                  isActive
+                    ? "bg-black text-white font-semibold"
+                    : "hover:bg-gray-100"
                 }`
               }
               to={path}
