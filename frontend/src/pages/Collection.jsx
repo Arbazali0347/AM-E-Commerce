@@ -72,42 +72,64 @@ const Collection = () => {
   
   
   return (
-    <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
-      {/* Filter Option */}
-      <div className='min-w-60'>
-        <p onClick={() => setShowFilter(!showFilter)} className='my-2 text-xl flex items-center cursor-pointer gap-2'>FILTERS
-          <img src={assets.dropdown_icon} className={`h-3 sm:hidden ${showFilter ? "rotate-90" : "hidden"}`} alt="" />
+    <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t">
+      {/* Filter Section */}
+      <div className="min-w-60">
+        <p
+          onClick={() => setShowFilter(!showFilter)}
+          className="my-3 text-xl font-semibold flex items-center cursor-pointer gap-2"
+        >
+          Filters
+          <img
+            src={assets.dropdown_icon}
+            className={`h-4 sm:hidden transition-transform ${
+              showFilter ? "rotate-90" : ""
+            }`}
+            alt=""
+          />
         </p>
 
-        {/* Category Side */}
-        <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? "" : "hidden"} sm:block`}>
-          <p className='mb-3 text-sm font-medium'>CATEGORY</p>
-          <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleCategory} value={"HomeCare"} />Home Care
-            </p>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleCategory} value={"Saving"} />Saving bundle
-            </p>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleCategory} value={"BulkDealing"} />Bulk dealing
-            </p>
-            
+        {/* Category Filter */}
+        <div
+          className={`rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-4 transition-all duration-300 ${
+            showFilter ? "" : "hidden"
+          } sm:block`}
+        >
+          <p className="mb-3 text-sm font-semibold text-gray-700">Category</p>
+          <div className="flex flex-col gap-3 text-sm text-gray-600">
+            {["HomeCare", "Saving", "BulkDealing"].map((cat, i) => (
+              <label key={i} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value={cat}
+                  onClick={toggleCategory}
+                  className="w-4 h-4 rounded-md text-blue-600 focus:ring-2 focus:ring-blue-400"
+                />
+                {cat.replace(/([A-Z])/g, " $1")}
+              </label>
+            ))}
           </div>
         </div>
-        {/* SubCategory Filter  */}
-        <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? "" : "hidden"} sm:block`}>
-          <p className="mb-3 text-sm font-medium">VARIATIONS</p>
-          <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleSubCategory} value={"500ml"} />500ml
-            </p>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleSubCategory} value={"1000ml"} />1000ml
-            </p>
-            <p className='flex gap-2'>
-              <input className='w-3' type="checkbox" onClick={toggleSubCategory} value={"5Litrs"} />5 Litre
-            </p>
+
+        {/* SubCategory Filter */}
+        <div
+          className={`rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-6 transition-all duration-300 ${
+            showFilter ? "" : "hidden"
+          } sm:block`}
+        >
+          <p className="mb-3 text-sm font-semibold text-gray-700">Variations</p>
+          <div className="flex flex-col gap-3 text-sm text-gray-600">
+            {["500ml", "1000ml", "5Litrs"].map((sub, i) => (
+              <label key={i} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  value={sub}
+                  onClick={toggleSubCategory}
+                  className="w-4 h-4 rounded-md text-blue-600 focus:ring-2 focus:ring-blue-400"
+                />
+                {sub}
+              </label>
+            ))}
           </div>
         </div>
       </div>
