@@ -9,7 +9,8 @@ import axios from 'axios';
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
-  const {navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext)
+  const {navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, products} = useContext(ShopContext)
+  const { totalAmount, totalDelivery } = getCartAmount();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,6 +32,7 @@ const PlaceOrder = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    const finalAmount = totalAmount + totalDelivery;
     try {
       let orderItems = [];
       for(const items in cartItems) {
@@ -48,7 +50,7 @@ const PlaceOrder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: getCartAmount() + delivery_fee,
+        amount: finalAmount,
       }
 
       switch (method) {

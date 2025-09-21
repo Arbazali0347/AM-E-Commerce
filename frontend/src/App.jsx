@@ -16,6 +16,8 @@ import "react-toastify/dist/ReactToastify.css";
 import PlaceOrder from './pages/PlaceOrder'
 import Cart from './pages/Cart'
 import WhatsAppButton from './components/Whatsbottom'
+import Delivery from './components/Delivery'
+import Policy from './components/Policy'
 const App = () => {
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
@@ -32,6 +34,8 @@ const App = () => {
         <Route path='/login' element={<Login/>}/>
         <Route path='/orders' element={<Orders/>}/>
         <Route path='/place-order' element={<PlaceOrder/>}/>
+        <Route path='/delivery' element={<Delivery/>}/>
+        <Route path='/policy' element={<Policy/>}/>
       </Routes>
       <Footer/>
       <WhatsAppButton/>

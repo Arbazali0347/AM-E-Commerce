@@ -83,5 +83,3 @@ const Cart = () => {
 }
 
 export default Cart;
-
-// Problem is not acount total amout when I add multiple items to cart with different sizes. It only counts one size quantity.

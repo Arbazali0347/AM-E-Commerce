@@ -18,6 +18,8 @@ const Add = ({ token }) => {
     const [subCategory, setSubCategory] = useState("500ml")
     const [bestseller, setBestseller] = useState(false)
     const [sizes, setSizes] = useState([])
+    const [freeDelivery, setFreeDelivery] = useState(false);
+
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
@@ -25,12 +27,13 @@ const Add = ({ token }) => {
             setLoading(true)
             const formData = new FormData()
             formData.append("name", name)
-            formData.append("description", description)
-            formData.append("price", price)
-            formData.append("category", category)
-            formData.append("subCategory", subCategory)
-            formData.append("bestseller", bestseller)
-            formData.append("sizes", JSON.stringify(sizes))
+            formData.append("description", description);
+            formData.append("price", price);
+            formData.append("category", category);
+            formData.append("subCategory", subCategory);
+            formData.append("bestseller", bestseller);
+            formData.append("freeDelivery", freeDelivery);
+            formData.append("sizes", JSON.stringify(sizes));
 
             image1 && formData.append("image1", image1)
             image2 && formData.append("image2", image2)
@@ -158,10 +161,22 @@ const Add = ({ token }) => {
                 <input onChange={() => setBestseller(prev => !prev)} checked={bestseller} type="checkbox" id="bestseller"></input>
                 <label className="cursor-pointer" id="bestseller">Add to bestseller</label>
             </div>
+
+            {/* free delivery */}
+            <div className='flex gap-2 mt-2'>
+                <input
+                    onChange={() => setFreeDelivery(prev => !prev)}
+                    checked={freeDelivery}
+                    type="checkbox"
+                    id="freeDelivery"
+                ></input>
+                <label className="cursor-pointer" id="freeDelivery">
+                    Free Delivery
+                </label>
+            </div>
             <button type="submit" className="cursor-pointer w-28 py-3 mt-4 bg-black text-white">{loading ? "Loading..." : "ADD"}</button>
         </form>
     )
 }
-
 
 export default Add
