@@ -69,12 +69,10 @@ const Navbar = () => {
           {/* Profile */}
           <div className="relative group">
             <img
-              onClick={() => {
-                if (!token) navigate("/login");
-              }}
+              onClick={() => (token ? null : navigate("/login"))}
               src={assets.profile_icon}
               alt="Profile"
-              className="w-6 cursor-pointer hover:scale-110 transition relative z-[60]"
+              className="w-6 cursor-pointer"
             />
 
             {/* Dropdown */}
