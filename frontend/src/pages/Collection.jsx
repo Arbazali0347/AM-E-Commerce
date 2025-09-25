@@ -80,7 +80,7 @@ const Collection = () => {
         <div className="rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-4">
           <p className="mb-3 text-sm font-semibold text-gray-700">Category</p>
           <div className="flex flex-col gap-3 text-sm text-gray-600">
-            {["HomeCare", "Saving", "BulkDealing"].map((cat, i) => (
+            {["HomeCare", "SavingBundles", "BulkDealing"].map((cat, i) => (
               <label key={i} className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
