@@ -18,6 +18,10 @@ const Sidebar = () => {
                     <img src={assets.order_icon} alt="" className='w-5 h-5' />
                     <p className="hidden md:block">Orders</p>
                 </NavLink>
+                <NavLink to="/bulk-deals" className='flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-l'>
+                    <img src={assets.order_icon} alt="" className='w-5 h-5' />
+                    <p className="hidden md:block">Bulk Deals</p>
+                </NavLink>
             </div>
         </div>
     )

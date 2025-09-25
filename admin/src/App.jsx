@@ -12,6 +12,8 @@ import Delivered from './components/Delivered'
 import Orders from './pages/Orders'
 import OutOfDelivery from './components/OutOfDelivery'
 import Shipping from './components/Shipping'
+import BulkDealsAdmin from './pages/BulkDeal'
+import UpdateProduct from './components/UpdateProduct'
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = "Rs."
@@ -34,6 +36,7 @@ const App = () => {
             <div className='w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base'>
               <Routes>
                 <Route path='/add' element={<Add token={token}/>} />
+                <Route path="/update-product/:id" element={<UpdateProduct token={token} />} />
                 <Route path='/list' element={<List token={token} />} />
                 <Route path='/orders' element={<Orders token={token} />} />
                 <Route path='/delivered' element={<Delivered token={token}/>} />
@@ -41,6 +44,7 @@ const App = () => {
                 <Route path='/placed' element={<CompleteOrders token={token} />} /> 
                 <Route path='/out-of-delivery' element={<OutOfDelivery token={token} />} /> 
                 <Route path='/shipping' element={<Shipping token={token} />} /> 
+                <Route path='/bulk-deals' element={<BulkDealsAdmin token={token} />} /> 
                 {/* it is my mistake I did not change the name of complete into the placed */}
               </Routes>
             </div>

@@ -79,4 +79,35 @@ const singleProduct = async (req, res) => {
     }
 }
 
-export { listProduct, addProduct, removeProduct, singleProduct }
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updated = await productModel.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.json({ success: true, message: "Product updated successfully!", product: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+const getSingleProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productModel.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.json({ success: true, product });
+  } catch (err) {
+    console.error("Get product error:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export { listProduct, addProduct, removeProduct, singleProduct, updateProduct, getSingleProduct}

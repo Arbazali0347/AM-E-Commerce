@@ -7,6 +7,7 @@ import userRoute from "./routes/userRouter.js"
 import productRoute from "./routes/productRoute.js"
 import cartRoute from "./routes/cartRoute.js"
 import orderRouter from "./routes/orderRoute.js"
+import bulkDealRoutes from "./routes/bulkDeal.routes.js"
 
 // App Config
 const app = express()
@@ -19,7 +20,7 @@ app.use(express.json())
 app.use(cors())
 
 // end point 
-
+app.use("/api/bulk-deals", bulkDealRoutes);
 app.use("/api/user", userRoute)
 app.use("/api/product", productRoute)
 app.use("/api/cart",cartRoute)

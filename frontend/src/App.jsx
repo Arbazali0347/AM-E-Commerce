@@ -18,6 +18,7 @@ import Cart from './pages/Cart'
 import WhatsAppButton from './components/Whatsbottom'
 import Delivery from './components/Delivery'
 import Policy from './components/Policy'
+import BulkDeal from './pages/BulkDeal'
 const App = () => {
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
@@ -36,6 +37,7 @@ const App = () => {
         <Route path='/place-order' element={<PlaceOrder/>}/>
         <Route path='/delivery' element={<Delivery/>}/>
         <Route path='/policy' element={<Policy/>}/>
+        <Route path="/bulk-dealing" element={<BulkDeal />} />
       </Routes>
       <Footer/>
       <WhatsAppButton/>
