@@ -13,6 +13,7 @@ const UpdateProduct = ({token}) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [oldPrice, setOldPrice] = useState("");
   const [category, setCategory] = useState("Home Cleaner");
   const [subCategory, setSubCategory] = useState("500ml");
   const [sizes, setSizes] = useState([]);
@@ -29,6 +30,7 @@ const UpdateProduct = ({token}) => {
           setName(product.name || "");
           setDescription(product.description || "");
           setPrice(product.price || "");
+          setOldPrice(product.oldPrice || "");
           setCategory(product.category || "Home Cleaner");
           setSubCategory(product.subCategory || "500ml");
           setSizes(product.sizes || []);
@@ -58,6 +60,7 @@ const UpdateProduct = ({token}) => {
       name,
       description,
       price,
+      oldPrice,
       category,
       subCategory,
       sizes,
@@ -148,6 +151,17 @@ const UpdateProduct = ({token}) => {
             <input
               onChange={(e) => setPrice(e.target.value)}
               value={price}
+              className="w-full px-3 py-2 sm:w-[120px] border rounded"
+              type="number"
+              placeholder="25"
+            />
+          </div>
+
+          <div>
+            <p className="mb-2">Old Price</p>
+            <input
+              onChange={(e) => setOldPrice(e.target.value)}
+              value={oldPrice}
               className="w-full px-3 py-2 sm:w-[120px] border rounded"
               type="number"
               placeholder="25"

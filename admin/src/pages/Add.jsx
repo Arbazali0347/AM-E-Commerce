@@ -14,6 +14,7 @@ const Add = ({ token }) => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
+    const [oldPrice, setOldPrice] = useState("")
     const [category, setCategory] = useState("HomeCare")
     const [subCategory, setSubCategory] = useState("500ml")
     const [bestseller, setBestseller] = useState(false)
@@ -29,6 +30,7 @@ const Add = ({ token }) => {
             formData.append("name", name)
             formData.append("description", description);
             formData.append("price", price);
+            formData.append("oldPrice", oldPrice);
             formData.append("category", category);
             formData.append("subCategory", subCategory);
             formData.append("bestseller", bestseller);
@@ -120,6 +122,10 @@ const Add = ({ token }) => {
                 <div>
                     <p className="mb-2">Price</p>
                     <input onChange={(e) => setPrice(e.target.value)} value={price} className="w-full px-3 py-2 sm:w-[120px]" type="Number" placeholder="25" ></input>
+                </div>
+                <div>
+                    <p className="mb-2">Old Price</p>
+                    <input onChange={(e) => setOldPrice(e.target.value)} value={oldPrice} className="w-full px-3 py-2 sm:w-[120px]" type="Number" placeholder="25" ></input>
                 </div>
             </div>
             {/* size */}
