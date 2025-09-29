@@ -37,20 +37,20 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
       </div>
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col justify-between h-32">
-        {/* Title Full */}
-        <p className="text-gray-800 font-medium text-base leading-snug">
+      <div className="p-4 flex flex-col justify-between min-h-36 sm:min-h-32">
+        {/* Title Full (No Cutoff) */}
+        <p className="text-gray-800 font-medium text-sm sm:text-base leading-snug break-words">
           {name}
         </p>
 
         {/* Price Section (Always at Bottom) */}
-        <div className="flex items-center gap-2 mt-auto">
+        <div className="flex items-center gap-2 mt-auto flex-wrap">
           {oldPrice && (
-            <p className="text-gray-400 text-sm line-through">
+            <p className="text-gray-400 text-xs sm:text-sm line-through">
               {currency}{oldPrice}
             </p>
           )}
-          <p className="text-red-600 font-bold text-lg">
+          <p className="text-red-600 font-bold text-base sm:text-lg break-words">
             {currency}{price}
           </p>
         </div>

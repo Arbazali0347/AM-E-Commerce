@@ -18,7 +18,6 @@ const Add = ({ token }) => {
     const [category, setCategory] = useState("HomeCare")
     const [subCategory, setSubCategory] = useState("500ml")
     const [bestseller, setBestseller] = useState(false)
-    const [sizes, setSizes] = useState([])
     const [freeDelivery, setFreeDelivery] = useState(false);
 
 
@@ -35,8 +34,6 @@ const Add = ({ token }) => {
             formData.append("subCategory", subCategory);
             formData.append("bestseller", bestseller);
             formData.append("freeDelivery", freeDelivery);
-            formData.append("sizes", JSON.stringify(sizes));
-
             image1 && formData.append("image1", image1)
             image2 && formData.append("image2", image2)
             image3 && formData.append("image3", image3)
@@ -126,40 +123,6 @@ const Add = ({ token }) => {
                 <div>
                     <p className="mb-2">Old Price</p>
                     <input onChange={(e) => setOldPrice(e.target.value)} value={oldPrice} className="w-full px-3 py-2 sm:w-[120px]" type="Number" placeholder="25" ></input>
-                </div>
-            </div>
-            {/* size */}
-            <div>
-                <p className="mb-2">Product Sizes</p>
-                <div className='flex gap-3'>
-                    <div onClick={() =>
-                        setSizes(prev => prev.includes("500ml")
-                            ? prev.filter(item => item !== "500ml")
-                            : [...prev, "500ml"]
-                        )}>
-                        <p className={`${sizes.includes('500ml') ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>
-                            500ml
-                        </p>
-                    </div>
-
-                    <div onClick={() =>
-                        setSizes(prev => prev.includes("1000ml")
-                            ? prev.filter(item => item !== "1000ml")
-                            : [...prev, "1000ml"]
-                        )}>
-                        <p className={`${sizes.includes('1000ml') ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>
-                            1000ml
-                        </p>
-                    </div>
-                    <div onClick={() =>
-                        setSizes(prev => prev.includes("5Liter")
-                            ? prev.filter(item => item !== "5Liter")
-                            : [...prev, "5Liter"]
-                        )}>
-                        <p className={`${sizes.includes('5Liter') ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>
-                            5Liter
-                        </p>
-                    </div>
                 </div>
             </div>
             {/* best saller */}

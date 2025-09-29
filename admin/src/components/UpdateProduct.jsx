@@ -16,7 +16,7 @@ const UpdateProduct = ({token}) => {
   const [oldPrice, setOldPrice] = useState("");
   const [category, setCategory] = useState("Home Cleaner");
   const [subCategory, setSubCategory] = useState("500ml");
-  const [sizes, setSizes] = useState([]);
+
   const [bestseller, setBestseller] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(false);
 
@@ -33,7 +33,6 @@ const UpdateProduct = ({token}) => {
           setOldPrice(product.oldPrice || "");
           setCategory(product.category || "Home Cleaner");
           setSubCategory(product.subCategory || "500ml");
-          setSizes(product.sizes || []);
           setBestseller(product.bestseller || false);
           setFreeDelivery(product.freeDelivery || false);
           
@@ -63,7 +62,6 @@ const UpdateProduct = ({token}) => {
       oldPrice,
       category,
       subCategory,
-      sizes,
       bestseller,
       freeDelivery,
     };
@@ -168,34 +166,6 @@ const UpdateProduct = ({token}) => {
             />
           </div>
         </div>
-
-        {/* Sizes */}
-        <div>
-          <p className="mb-2">Product Sizes</p>
-          <div className="flex gap-3">
-            {["500ml", "1000ml", "5Liter"].map((size) => (
-              <div
-                key={size}
-                onClick={() =>
-                  setSizes((prev) =>
-                    prev.includes(size)
-                      ? prev.filter((item) => item !== size)
-                      : [...prev, size]
-                  )
-                }
-              >
-                <p
-                  className={`${
-                    sizes.includes(size) ? "bg-pink-200" : "bg-slate-200"
-                  } px-3 py-1 cursor-pointer rounded`}
-                >
-                  {size}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Bestseller */}
         <div className="flex gap-2 mt-2">
           <input

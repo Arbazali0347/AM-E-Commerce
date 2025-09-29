@@ -8,7 +8,6 @@ const Product = () => {
   const { products, currency, addToCart, loading } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
-  const [size, setSize] = useState("");
 
   const fetchProductData = () => {
     products.map((item) => {
@@ -67,31 +66,14 @@ const Product = () => {
           <p className="mt-5 text-gray-600 leading-relaxed md:w-4/5">
             {productData.description}
           </p>
-          {/* Variations */}
-          <div className="flex flex-col gap-4 my-8">
-            <p className="font-medium">Select Size</p>
-            <div className="flex gap-3 flex-wrap">
-              {productData.sizes.map((item, index) => (
-                <button
-                  onClick={() => setSize(item)}
-                  key={index}
-                  className={`py-2 px-5 rounded-lg border font-medium transition 
-                    ${item === size
-                      ? "bg-pink-300 text-white border-black"
-                      : "bg-gray-100 hover:bg-gray-200 border"
-                    }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Add to Cart Button */}
+
+          {/* ❌ Removed Variation Section (size selection) */}
+
+          {/* ✅ Add to Cart Button (no size required now) */}
           <button
-            onClick={() => addToCart(productData._id, size)}
+            onClick={() => addToCart(productData._id)}  // 👈 size argument removed
             disabled={loading}
-            className="bg-black hover:bg-gray-900 text-white px-10 py-3 text-sm rounded-xl shadow-md transition disabled:opacity-50"
+            className="bg-black hover:bg-gray-900 text-white px-10 py-3 text-sm rounded-xl shadow-md transition disabled:opacity-50 mt-10"
           >
             {loading ? "Loading..." : "ADD TO CART"}
           </button>
