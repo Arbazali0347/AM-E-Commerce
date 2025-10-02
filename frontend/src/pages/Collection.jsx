@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 import { Link } from "react-router-dom";
@@ -73,89 +72,92 @@ const Collection = () => {
   }, [sortType]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t">
-      {/* ✅ Filter Section (always visible on mobile + desktop) */}
-      <div className="w-full sm:w-60">
-        {/* Category Filter */}
-        <div className="rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-4">
-          <p className="mb-3 text-sm font-semibold text-gray-700">Category</p>
-          <div className="flex flex-col gap-3 text-sm text-gray-600">
-            {["HomeCare", "SavingBundles", "BulkDealing"].map((cat, i) => (
-              <label key={i} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  value={cat}
-                  onClick={toggleCategory}
-                  className="w-4 h-4 rounded-md text-blue-600 focus:ring-2 focus:ring-blue-400"
-                />
-                {cat.replace(/([A-Z])/g, " $1")}
-              </label>
-            ))}
-          </div>
+    <div className="pt-10 border-t">
+      {/* ✅ Filter Title */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-gray-50 p-5 rounded-2xl shadow-sm mb-10">
+        {/* Category */}
+        <div className="flex items-center gap-4 flex-wrap">
+          <span className="font-semibold text-gray-700 text-sm">Category:</span>
+          {["HomeCare", "SavingBundles"].map((cat, i) => (
+            <label
+              key={i}
+              className="flex items-center gap-2 text-sm cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                value={cat}
+                onClick={toggleCategory}
+                className="w-4 h-4 text-blue-600 rounded"
+              />
+              {cat.replace(/([A-Z])/g, " $1")}
+            </label>
+          ))}
         </div>
 
-        {/* SubCategory Filter */}
-        <div className="rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-6">
-          <p className="mb-3 text-sm font-semibold text-gray-700">Variations</p>
-          <div className="flex flex-col gap-3 text-sm text-gray-600">
-            {["500ml", "1000ml", "5Litrs"].map((sub, i) => (
-              <label key={i} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  value={sub}
-                  onClick={toggleSubCategory}
-                  className="w-4 h-4 rounded-md text-blue-600 focus:ring-2 focus:ring-blue-400"
-                />
-                {sub}
-              </label>
-            ))}
-          </div>
+        {/* SubCategory */}
+        <div className="flex items-center gap-4 flex-wrap">
+          <span className="font-semibold text-gray-700 text-sm">Variations:</span>
+          {["500ml", "1000ml", "5Litrs"].map((sub, i) => (
+            <label
+              key={i}
+              className="flex items-center gap-2 text-sm cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                value={sub}
+                onClick={toggleSubCategory}
+                className="w-4 h-4 text-blue-600 rounded"
+              />
+              {sub}
+            </label>
+          ))}
         </div>
 
-        {/* Bulk Dealing Card */}
-        <div className="rounded-2xl shadow-md border border-gray-200 px-5 py-4 mt-6">
-          <Link
-            to="/bulk-dealing"
-            className="block p-4 border rounded hover:shadow"
-          >
-            <h3 className="font-semibold">Bulk Dealing</h3>
-            <p className="text-sm text-gray-600">
-              Orders 30kg+ or brand/wholesale enquiries
-            </p>
-          </Link>
-        </div>
-      </div>
-
-      {/* Right Side */}
-      <div className="flex-1">
-        <div className="flex justify-between text-base sm:text-2xl mb-4">
-          <Title text1={"ALL"} text2={"COLLECTIONS"} />
+        {/* Sort */}
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-gray-700 text-sm">Sort:</span>
           <select
             onChange={(e) => setSortType(e.target.value)}
-            className="border-2 border-gray-300 text-sm px-2"
+            className="border px-3 py-1 text-sm rounded-md shadow-sm"
           >
-            <option value="relavent">Sort by: Relavent</option>
-            <option value="low-high">Sort by: Low to High</option>
-            <option value="high-low">Sort by: High to Low</option>
+            <option value="relavent">Relevant</option>
+            <option value="low-high">Low to High</option>
+            <option value="high-low">High to Low</option>
           </select>
         </div>
 
-        {/* Map Product */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              name={item.name}
-              id={item._id}
-              price={item.price}
-              oldPrice={item.oldPrice}
-              image={item.image}
-              freeDelivery={item.freeDelivery}
-            />
-          ))}
-        </div>
+        {/* Bulk Dealing Shortcut */}
+        <Link
+          to="/bulk-dealing"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+        >
+          Bulk Dealing
+        </Link>
       </div>
+
+      {/* ✅ All Collections Title */}
+      <div className="mb-6">
+        <Title text1={"ALL"} text2={"COLLECTIONS"} />
+      </div>
+
+      {/* ✅ Product Grid (same size as before) */}
+      {/* ✅ Product Grid (6 per row on large screen) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+        {filterProducts.map((item, index) => (
+          <ProductItem
+            key={index}
+            name={item.name}
+            id={item._id}
+            price={item.price}
+            oldPrice={item.oldPrice}
+            image={item.image}
+            freeDelivery={item.freeDelivery}
+          />
+        ))}
+      </div>
+
     </div>
+
   );
 };
 

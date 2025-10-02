@@ -1,36 +1,51 @@
-import React, { useContext, useEffect } from 'react'
-import { ShopContext } from '../context/ShopContext'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from "react";
+import { ShopContext } from "../context/ShopContext";
+import { Link } from "react-router-dom";
 
 const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery }) => {
-  const { currency } = useContext(ShopContext)
-  useEffect(() => {
-    console.log(oldPrice);
-  }, [])
-  
+  const { currency } = useContext(ShopContext);
+  const [hovered, setHovered] = useState(false);
+
   return (
     <Link
       to={`/product/${id}`}
-      className="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
+      className="block bg-blue-500/10 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Image Section */}
-      <div className="relative overflow-hidden rounded-t-xl">
+      <div className="relative overflow-hidden rounded-t-xl h-56">
         <img
           src={image[0]}
           alt={name}
-          className="w-full h-56 object-cover transition-transform duration-500 hover:scale-105"
+          className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[3000ms] ease-in-out ${
+            hovered && image[1]
+              ? "opacity-0 scale-110"
+              : hovered
+              ? "opacity-100 scale-110"
+              : "opacity-100 scale-100"
+          }`}
         />
+        {image[1] && (
+          <img
+            src={image[1]}
+            alt={name}
+            className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[1200ms] ease-in-out ${
+              hovered ? "opacity-100 scale-110" : "opacity-0 scale-100"
+            }`}
+          />
+        )}
 
-        {/* Free Delivery Tag (Top-Left) */}
+        {/* Free Delivery Tag */}
         {freeDelivery && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
             Free Delivery
           </span>
         )}
 
-        {/* Discount Tag (Top-Right) */}
+        {/* Discount Tag */}
         {discount && (
-          <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+          <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
             -{discount}%
           </span>
         )}
@@ -38,25 +53,23 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
 
       {/* Content Section */}
       <div className="p-4 flex flex-col justify-between min-h-36 sm:min-h-32">
-        {/* Title Full (No Cutoff) */}
-        <p className="text-gray-800 font-medium text-sm sm:text-base leading-snug break-words">
+        <p className="text-gray-900 font-medium text-sm sm:text-base leading-snug break-words">
           {name}
         </p>
 
-        {/* Price Section (Always at Bottom) */}
         <div className="flex items-center gap-2 mt-auto flex-wrap">
           {oldPrice && (
-            <p className="text-gray-400 text-xs sm:text-sm line-through">
+            <p className="text-gray-500 text-xs sm:text-sm line-through">
               {currency}{oldPrice}
             </p>
           )}
-          <p className="text-red-600 font-bold text-base sm:text-lg break-words">
+          <p className="text-blue-700 text-xs sm:text-lg break-words">
             {currency}{price}
           </p>
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ProductItem
+export default ProductItem;

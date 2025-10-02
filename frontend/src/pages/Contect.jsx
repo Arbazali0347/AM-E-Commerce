@@ -28,7 +28,7 @@ const Contect = () => {
         {/* Right Side Info */}
         <div className="flex-1 flex flex-col gap-8">
           {/* Store Info */}
-          <div className="bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+          <div className="bg-blue-500/10 shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
             <h3 className="font-semibold text-xl text-gray-700 flex items-center gap-2">
               <MapPin size={20} /> Our Store
             </h3>
@@ -39,7 +39,7 @@ const Contect = () => {
           </div>
 
           {/* Contact Info */}
-          <div className="bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+          <div className="bg-blue-500/10 shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
             <h3 className="font-semibold text-xl text-gray-700 flex items-center gap-2">
               <Phone size={20} /> Contact
             </h3>
@@ -50,7 +50,7 @@ const Contect = () => {
           </div>
 
           {/* Careers */}
-          <div className="bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+          <div className="bg-blue-500/10 shadow-md rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
             <h3 className="font-semibold text-xl text-gray-700 flex items-center gap-2">
               <Briefcase size={20} /> Careers at Forever
             </h3>

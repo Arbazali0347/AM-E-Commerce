@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from "react-router-dom"
-import { ShopContext } from '../context/ShopContext';
-import RelatedProduct from '../components/RelatedProduct';
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { ShopContext } from "../context/ShopContext";
+import RelatedProduct from "../components/RelatedProduct";
 
 const Product = () => {
   const { productId } = useParams();
@@ -47,7 +47,7 @@ const Product = () => {
             <img
               src={image}
               alt={productData.name}
-              className="w-full h-auto rounded-2xl shadow-lg border"
+              className="w-full h-auto rounded-2xl shadow-lg border transition-transform duration-[3000ms] ease-in-out hover:scale-110"
             />
           </div>
         </div>
@@ -55,23 +55,32 @@ const Product = () => {
         {/*---------------- Right Side -----------------*/}
         <div className="flex-1">
           <h1 className="font-bold text-2xl sm:text-3xl">{productData.name}</h1>
-          <p className="mt-4 text-3xl font-semibold text-gray-800">
-            {currency}{productData.price}
-          </p>
-          <div className='mt-5 ml-1'>
-            {productData.freeDelivery && (
-              <p className="text-green-600 font-semibold">Free Delivery</p>
+
+          {/* Price Section */}
+
+          <div className="mt-auto flex items-center gap-2">
+            <span className="text-3xl font-bold text-green-600">{currency}{productData.price}</span>
+            {productData.oldPrice && (
+              <span className="text-sm text-gray-500 line-through">{currency}{productData.oldPrice}</span>
             )}
           </div>
+
+
+          {/* 🚚 Free Delivery Badge */}
+          {productData.freeDelivery && (
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-1.5 rounded-full shadow-md text-sm font-semibold animate-pulse mt-4">
+              🚚 Free Delivery
+            </div>
+          )}
+
+          {/* Description */}
           <p className="mt-5 text-gray-600 leading-relaxed md:w-4/5">
             {productData.description}
           </p>
 
-          {/* ❌ Removed Variation Section (size selection) */}
-
-          {/* ✅ Add to Cart Button (no size required now) */}
+          {/* ✅ Add to Cart Button */}
           <button
-            onClick={() => addToCart(productData._id)}  // 👈 size argument removed
+            onClick={() => addToCart(productData._id)}
             disabled={loading}
             className="bg-black hover:bg-gray-900 text-white px-10 py-3 text-sm rounded-xl shadow-md transition disabled:opacity-50 mt-10"
           >
@@ -90,7 +99,10 @@ const Product = () => {
 
       {/* ------------- RELATED PRODUCTS -------------------------- */}
       <div className="mt-16">
-        <RelatedProduct category={productData.category} subCategory={productData.subCategory} />
+        <RelatedProduct
+          category={productData.category}
+          subCategory={productData.subCategory}
+        />
       </div>
     </div>
   ) : (

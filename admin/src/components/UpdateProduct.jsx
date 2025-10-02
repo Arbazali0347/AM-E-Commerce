@@ -14,7 +14,7 @@ const UpdateProduct = ({token}) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [oldPrice, setOldPrice] = useState("");
-  const [category, setCategory] = useState("Home Cleaner");
+  const [category, setCategory] = useState("HomeCare");
   const [subCategory, setSubCategory] = useState("500ml");
 
   const [bestseller, setBestseller] = useState(false);
@@ -31,7 +31,7 @@ const UpdateProduct = ({token}) => {
           setDescription(product.description || "");
           setPrice(product.price || "");
           setOldPrice(product.oldPrice || "");
-          setCategory(product.category || "Home Cleaner");
+          setCategory(product.category || "HomeCare");
           setSubCategory(product.subCategory || "500ml");
           setBestseller(product.bestseller || false);
           setFreeDelivery(product.freeDelivery || false);
@@ -125,9 +125,8 @@ const UpdateProduct = ({token}) => {
               onChange={(e) => setCategory(e.target.value)}
               className="w-full px-3 py-2 border rounded"
             >
-              <option>Home Cleaner</option>
-              <option>Saving</option>
-              <option>BulkDealing</option>
+              <option>HomeCare</option>
+              <option>SavingBundles</option>
             </select>
           </div>
 
