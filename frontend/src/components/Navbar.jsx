@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-blue-400 shadow-md">
+    <nav className="sticky top-0 z-50 bg-red-400 shadow-md">
       <div className="flex items-center justify-between px-5 md:px-10 py-4 font-medium">
         {/* Logo */}
         <Link to="/">
@@ -29,7 +29,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 text-sm text-white">
+        <ul className="hidden md:flex gap-8 text-sm text-black">
           {["/", "/shop", "/about", "/contect"].map((path, i) => (
             <NavLink
               key={i}
@@ -37,7 +37,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `relative flex flex-col items-center transition duration-300 hover:text-gray-200 ${
                   isActive
-                    ? "after:block after:w-full after:h-1 after:bg-white after:rounded mt-1"
+                    ? "after:block after:w-full after:h-1 after:bg-black after:rounded mt-1"
                     : ""
                 }`
               }
@@ -106,22 +106,22 @@ const Navbar = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full bg-blue-400 shadow-lg transition-all duration-300 z-50 ${visible ? "w-3/4 sm:w-1/2" : "w-0"}`}
+        className={`fixed top-0 right-0 h-full bg-red-400 shadow-lg transition-all duration-300 z-50 ${visible ? "w-3/4 sm:w-1/2" : "w-0"}`}
       >
-        <div className="flex flex-col text-white h-full">
+        <div className="flex flex-col text-black h-full">
           <div onClick={() => setVisible(false)} className="flex items-center gap-4 p-4 cursor-pointer border-b border-white/30">
             <img src={assets.dropdown_icon} alt="Back" className="h-5 rotate-180" />
             <p className="font-medium">Close</p>
           </div>
-          {["/", "/collection", "/about", "/contect"].map((path, i) => (
+          {["/", "/shop", "/about", "/contect"].map((path, i) => (
             <NavLink
               key={i}
               onClick={() => setVisible(false)}
               className={({ isActive }) =>
                 `py-3 pl-6 border-b border-white/30 transition duration-300 ${
                   isActive
-                    ? "bg-blue-700 text-white font-semibold after:block after:w-full after:h-1 after:bg-white after:rounded mt-1"
-                    : "hover:bg-blue-500"
+                    ? "bg-black text-white font-semibold after:block after:w-full after:h-1 after:bg-white after:rounded mt-1"
+                    : "hover:bg-gray-400"
                 }`
               }
               to={path}

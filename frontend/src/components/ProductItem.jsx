@@ -9,7 +9,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
   return (
     <Link
       to={`/product/${id}`}
-      className="block bg-blue-500/10 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
+      className="block bg-red-500/10 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -63,7 +63,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
               {currency}{oldPrice}
             </p>
           )}
-          <p className="text-blue-700 text-xs sm:text-lg break-words">
+          <p className="text-red-700 text-xs sm:text-lg break-words">
             {currency}{price}
           </p>
         </div>

@@ -129,7 +129,7 @@ const Collection = () => {
         {/* Bulk Dealing Shortcut */}
         <Link
           to="/bulk-dealing"
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+          className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700"
         >
           Bulk Dealing
         </Link>

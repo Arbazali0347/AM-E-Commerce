@@ -59,7 +59,7 @@ const Product = () => {
           {/* Price Section */}
 
           <div className="mt-auto flex items-center gap-2">
-            <span className="text-3xl font-bold text-green-600">{currency}{productData.price}</span>
+            <span className="text-3xl text-red-600">{currency}{productData.price}</span>
             {productData.oldPrice && (
               <span className="text-sm text-gray-500 line-through">{currency}{productData.oldPrice}</span>
             )}
@@ -68,7 +68,7 @@ const Product = () => {
 
           {/* 🚚 Free Delivery Badge */}
           {productData.freeDelivery && (
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-1.5 rounded-full shadow-md text-sm font-semibold animate-pulse mt-4">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-1.5 rounded-full shadow-md text-sm font-semibold animate-pulse mt-4">
               🚚 Free Delivery
             </div>
           )}
