@@ -14,7 +14,7 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [token, setToken] = useState("");
 
     // ✅ addToCart without size
@@ -113,6 +113,7 @@ const getCartAmount = () => {
             const { data } = await axios.get(backendUrl + "/api/product/list");
             if (data.success) {
                 setProducts(data.products);
+                setLoading(false)
             } else {
                 toast.error(data.message);
             }
