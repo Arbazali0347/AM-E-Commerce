@@ -9,7 +9,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
   return (
     <Link
       to={`/product/${id}`}
-      className="block bg-red-500/10 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
+      className="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
