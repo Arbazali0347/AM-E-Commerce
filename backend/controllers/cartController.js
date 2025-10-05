@@ -5,7 +5,7 @@ const addCart = async (req, res) => {
     try {
         const { userId, itemId } = req.body;
         const userData = await userModel.findById(userId);
-        let cartData = userData.cartData || {};
+        let cartData = userData.cartData;
 
         if (cartData[itemId]) {
             cartData[itemId] += 1;   // agar already hai to +1
@@ -25,7 +25,7 @@ const updateCart = async (req, res) => {
     try {
         const { userId, itemId, quantity } = req.body;
         const userData = await userModel.findById(userId);
-        let cartData = userData.cartData || {};
+        let cartData = userData.cartData;
 
         cartData[itemId] = quantity; // direct quantity set karo
 
@@ -41,7 +41,7 @@ const getUserCart = async (req, res) => {
     try {
         const { userId } = req.body;
         const userData = await userModel.findById(userId);
-        let cartData = userData.cartData || {};
+        let cartData = userData.cartData;
         res.json({ success: true, cartData });
     } catch (error) {
         res.json({ success: false, message: error.message });

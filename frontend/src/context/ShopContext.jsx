@@ -18,7 +18,7 @@ const ShopContextProvider = (props) => {
     const [token, setToken] = useState("");
 
     // ✅ addToCart without size
-    const addToCart = async (itemId) => {
+    const addToCart = async (itemId, flavor) => {
         let cartData = structuredClone(cartItems);
 
         if (cartData[itemId]) {
@@ -76,36 +76,36 @@ const ShopContextProvider = (props) => {
     };
 
     // ✅ get total cart amount without size
-const getCartAmount = () => {
-  let totalAmount = 0;
-  let totalDelivery = 0;
-  let hasPaidDelivery = false; // track karenge koi item freeDelivery nahi hai kya
+    const getCartAmount = () => {
+        let totalAmount = 0;
+        let totalDelivery = 0;
+        let hasPaidDelivery = false; // track karenge koi item freeDelivery nahi hai kya
 
-  for (const itemId in cartItems) {
-    const itemInfo = products.find((p) => p._id === itemId);
-    if (!itemInfo) continue;
+        for (const itemId in cartItems) {
+            const itemInfo = products.find((p) => p._id === itemId);
+            if (!itemInfo) continue;
 
-    const qty = Number(cartItems[itemId] || 0);
-    const price = Number(itemInfo.price || 0);
+            const qty = Number(cartItems[itemId] || 0);
+            const price = Number(itemInfo.price || 0);
 
-    if (qty > 0) {
-      // product ka price
-      totalAmount += price * qty;
+            if (qty > 0) {
+                // product ka price
+                totalAmount += price * qty;
 
-      // check agar freeDelivery nahi hai
-      if (!itemInfo.freeDelivery) {
-        hasPaidDelivery = true;
-      }
-    }
-  }
+                // check agar freeDelivery nahi hai
+                if (!itemInfo.freeDelivery) {
+                    hasPaidDelivery = true;
+                }
+            }
+        }
 
-  // sirf ek hi dafa 300 charge hoga agar koi item freeDelivery wala na ho
-  if (hasPaidDelivery) {
-    totalDelivery = 300;
-  }
+        // sirf ek hi dafa 300 charge hoga agar koi item freeDelivery wala na ho
+        if (hasPaidDelivery) {
+            totalDelivery = 300;
+        }
 
-  return { totalAmount, totalDelivery };
-};
+        return { totalAmount, totalDelivery };
+    };
 
 
     const fetchProducts = async () => {
@@ -144,11 +144,18 @@ const getCartAmount = () => {
     }, []);
 
     useEffect(() => {
-        if (!token && localStorage.getItem("token")) {
-            setToken(localStorage.getItem("token"));
-            getUserCart(localStorage.getItem("token"));
+        const savedToken = localStorage.getItem("token");
+        if (savedToken && !token) {
+            setToken(savedToken);
+            getUserCart(savedToken);
         }
     }, []);
+
+    useEffect(() => {
+        if (token) {
+            getUserCart(token);
+        }
+    }, [token]);
 
     const value = {
         products,

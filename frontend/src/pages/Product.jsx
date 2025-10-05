@@ -8,6 +8,7 @@ const Product = () => {
   const { products, currency, addToCart, loading } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
+  const [selectedFlavor, setSelectedFlavor] = useState("Rose");
 
   const fetchProductData = () => {
     products.map((item) => {
@@ -22,6 +23,11 @@ const Product = () => {
   useEffect(() => {
     fetchProductData();
   }, [productId, products]);
+
+  useEffect(() => {
+    console.log(selectedFlavor);
+  }, [selectedFlavor]);
+
 
   return productData ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100 px-2 sm:px-8 lg:px-13">
@@ -57,14 +63,36 @@ const Product = () => {
           <h1 className="font-bold text-2xl sm:text-3xl">{productData.name}</h1>
 
           {/* Price Section */}
-
           <div className="mt-auto flex items-center gap-2">
-            <span className="text-3xl text-red-600">{currency}{productData.price}</span>
+            <span className="text-3xl text-red-600">
+              {currency}
+              {productData.price}
+            </span>
             {productData.oldPrice && (
-              <span className="text-sm text-gray-500 line-through">{currency}{productData.oldPrice}</span>
+              <span className="text-sm text-gray-500 line-through">
+                {currency}
+                {productData.oldPrice}
+              </span>
             )}
           </div>
 
+          {/* ✨ Flavor Selection (Only for products with flavors) */}
+          {productData.flavors && productData.flavors.length > 0 && (
+            <div className="mt-6">
+              <h3 className="font-semibold mb-2">Select Flavor:</h3>
+              <select
+                value={selectedFlavor}
+                onChange={(e) => setSelectedFlavor(e.target.value)}
+                className="px-3 py-2 border rounded w-full max-w-[250px]"
+              >
+                {productData.flavors.map((flavor, index) => (
+                  <option key={index} value={flavor}>
+                    {flavor}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* 🚚 Free Delivery Badge */}
           {productData.freeDelivery && (
@@ -80,7 +108,7 @@ const Product = () => {
 
           {/* ✅ Add to Cart Button */}
           <button
-            onClick={() => addToCart(productData._id)}
+            onClick={() => addToCart(productData._id, selectedFlavor)}
             disabled={loading}
             className="bg-black hover:bg-gray-900 text-white px-10 py-3 text-sm rounded-xl shadow-md transition disabled:opacity-50 mt-10"
           >

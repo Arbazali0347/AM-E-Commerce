@@ -15,6 +15,7 @@ const placeOrder = async (req, res) => {
         }
 
         const trackingId = await getNextTrackingId();
+        console.log("📦 placeOrder BODY:", req.body);
         const { userId, items, amount, address } = req.body;
         const orderData = {
             userId,

@@ -4,12 +4,12 @@ import jwt from "jsonwebtoken"
 // function for add product
 const addProduct = async (req, res) => {
     try {
-        const { name, description, price, oldPrice, category, subCategory, sizes, bestseller, freeDelivery } = req.body;
+        const { name, description, price, oldPrice, category, subCategory, flavors, bestseller, freeDelivery } = req.body;
         const image1 = req.files.image1 && req.files.image1[0]
         const image2 = req.files.image2 && req.files.image2[0]
         const image3 = req.files.image3 && req.files.image3[0]
         const image4 = req.files.image4 && req.files.image4[0]
-
+        
         const images = [image1, image2, image3, image4].filter((item) => item !== undefined)
         const imageUrl = await Promise.all(
             images.map(async (item) => {
@@ -24,6 +24,7 @@ const addProduct = async (req, res) => {
             price: Number(price),
             oldPrice: Number(oldPrice),
             subCategory,
+            flavors,
             bestseller: bestseller === "true" ? true : false,
             image: imageUrl,
             freeDelivery: freeDelivery,
@@ -37,6 +38,65 @@ const addProduct = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
+// ✨ UPDATE PRODUCT (With Image Option)
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 🟡 Get existing product
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // 🟡 Image Upload (optional)
+    const image1 = req.files.image1 && req.files.image1[0];
+    const image2 = req.files.image2 && req.files.image2[0];
+    const image3 = req.files.image3 && req.files.image3[0];
+    const image4 = req.files.image4 && req.files.image4[0];
+
+    const images = [image1, image2, image3, image4].filter((item) => item !== undefined)
+
+    let uploadedUrls = [];
+    if (images.length > 0) {
+      uploadedUrls = await Promise.all(
+        images.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, { resource_type: "image" });
+          return result.secure_url;
+        })
+      );
+    }
+
+    // 🟡 Build updated fields
+    const updatedFields = {
+      name: req.body.name,
+      description: req.body.description,
+      price: Number(req.body.price),
+      oldPrice: Number(req.body.oldPrice),
+      category: req.body.category,
+      subCategory: req.body.subCategory,
+      bestseller: req.body.bestseller === "true" || req.body.bestseller === true,
+      freeDelivery: req.body.freeDelivery === "true" || req.body.freeDelivery === true,
+      flavors: req.body.flavors,
+    };
+
+    // 🟡 If new images uploaded → replace; else keep old
+    if (uploadedUrls.length > 0) {
+      updatedFields.image = uploadedUrls;
+    }
+
+    // 🟡 Update in DB
+    const updatedProduct = await productModel.findByIdAndUpdate(id, updatedFields, { new: true });
+
+    res.json({ success: true, message: "Product updated successfully!", product: updatedProduct });
+  } catch (error) {
+    console.error("Update Error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 // function for add product
 const listProduct = async (req, res) => {
     try {
@@ -79,20 +139,6 @@ const singleProduct = async (req, res) => {
     }
 }
 
-const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updated = await productModel.findByIdAndUpdate(id, req.body, { new: true });
-
-    if (!updated) {
-      return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    res.json({ success: true, message: "Product updated successfully!", product: updated });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-};
 
 const getSingleProduct = async (req, res) => {
   try {

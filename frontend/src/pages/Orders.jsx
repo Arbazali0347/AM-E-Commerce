@@ -51,14 +51,23 @@ const Orders = () => {
           orderData.map((item, index) => (
             <div key={index} className='py-4 border-t text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
               <div className='flex items-start gap-6 text-sm'>
-                <img src={item.image[0]} alt="" className='w-16 sm:w-20' />
+                <img
+                  src={item.image?.[0] || "/placeholder.jpg"}
+                  alt={item.name || "Product"}
+                  className='w-16 sm:w-20 object-cover rounded'
+                />
                 <div>
                   <p className='text-pink-700'>
                     Tracking ID: #10{item.trackingId}
                   </p>
                   <p className='sm:text-base font-medium'>{item.name}</p>
                   <div className='flex items-center gap-3 mt-1 text-base text-gray-700'>
-                    <p>{currency}{item.size.price}</p>
+                    {item.oldPrice && (
+                      <p className="text-gray-500 text-xs sm:text-sm line-through">
+                        {currency}{item.oldPrice}
+                      </p>
+                    )}
+                    <p className="text-red-700">{currency}{item.price}</p>
                     <p>Quinitity: {item.quantity}</p>
                   </div>
                   <p className='mt-1'>Date: <span className='text-gray-400'>{new Date(item.date).toDateString()}</span></p>
