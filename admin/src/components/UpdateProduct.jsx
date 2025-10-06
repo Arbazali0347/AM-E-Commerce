@@ -112,8 +112,7 @@ const UpdateProduct = ({ token }) => {
   if (loading) return <p className="text-center p-5">Loading...</p>;
 
   // Available flavors (jo tu select karna chahta hai)
-  const availableFlavors = ["Rose", "Lemon", "Jasmine", "Lavender", "Mint"];
-
+  const availableFlavors = ["Dove velvet", "lux fusion", "aqua wave"]
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Update Product</h2>
