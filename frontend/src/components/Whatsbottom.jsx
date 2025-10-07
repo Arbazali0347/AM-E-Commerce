@@ -2,7 +2,7 @@ import React from "react";
 
 const WhatsAppButton = () => {
   const phoneNumber = "+923451081010"; // apna WhatsApp number (country code ke sath)
-  const message = "Hello, I am you costumer!"; // default message
+  const message = "Hey! Can i get more info ?"; // default message
 
   return (
     <a
