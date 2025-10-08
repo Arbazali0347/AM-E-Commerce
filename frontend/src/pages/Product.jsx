@@ -6,10 +6,12 @@ import RelatedProduct from "../components/RelatedProduct";
 const Product = () => {
   const { productId } = useParams();
   const { products, currency, addToCart, loading } = useContext(ShopContext);
+
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
-  const [selectedFlavor, setSelectedFlavor] = useState("Rose");
+  const [selectedFlavor, setSelectedFlavor] = useState("");
 
+  // 🟡 Product fetch from context
   const fetchProductData = () => {
     products.map((item) => {
       if (item._id === productId) {
@@ -24,15 +26,24 @@ const Product = () => {
     fetchProductData();
   }, [productId, products]);
 
+  // 🟢 Default flavor select if available
   useEffect(() => {
-    console.log(selectedFlavor);
-  }, [selectedFlavor]);
+    if (productData && productData.flavors && productData.flavors.length > 0) {
+      setSelectedFlavor(productData.flavors[0]);
+    } else {
+      setSelectedFlavor(""); // ✅ flavor reset if none
+    }
+  }, [productData]);
 
+  // 🧪 Debug flavor changes (optional)
+  useEffect(() => {
+    console.log("Selected Flavor:", selectedFlavor);
+  }, [selectedFlavor]);
 
   return productData ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100 px-2 sm:px-8 lg:px-13">
       <div className="flex gap-12 sm:gap-16 flex-col sm:flex-row">
-        {/*------------------- Left Side Image ---------------------*/}
+        {/* ---------------- Left Side (Images) ---------------- */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
           {/* Thumbnail Images */}
           <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-auto justify-between sm:justify-normal sm:w-[18%] w-full gap-2 sm:gap-3">
@@ -58,11 +69,11 @@ const Product = () => {
           </div>
         </div>
 
-        {/*---------------- Right Side -----------------*/}
+        {/* ---------------- Right Side ---------------- */}
         <div className="flex-1">
           <h1 className="font-bold text-2xl sm:text-3xl">{productData.name}</h1>
 
-          {/* Price Section */}
+          {/* 💰 Price Section */}
           <div className="mt-auto flex items-center gap-2">
             <span className="text-3xl text-red-600">
               {currency}
@@ -76,7 +87,6 @@ const Product = () => {
             )}
           </div>
 
-          {/* ✨ Flavor Selection (Only for products with flavors) */}
           {productData.flavors && productData.flavors.length > 0 && (
             <div className="mt-6">
               <h3 className="font-semibold mb-2">Select Flavor:</h3>
@@ -93,6 +103,7 @@ const Product = () => {
               </select>
             </div>
           )}
+          {/* 🟡 Agar flavors empty hain → ye block render hi nahi hoga, isliye [] bhi nahi dikhega */}
 
           {/* 🚚 Free Delivery Badge */}
           {productData.freeDelivery && (
@@ -101,12 +112,12 @@ const Product = () => {
             </div>
           )}
 
-          {/* Description */}
+          {/* 📜 Description */}
           <p className="mt-5 text-gray-600 leading-relaxed md:w-4/5">
             {productData.description}
           </p>
 
-          {/* ✅ Add to Cart Button */}
+          {/* 🛒 Add to Cart */}
           <button
             onClick={() => addToCart(productData._id, selectedFlavor)}
             disabled={loading}
@@ -115,7 +126,7 @@ const Product = () => {
             {loading ? "Loading..." : "ADD TO CART"}
           </button>
 
-          {/* Info */}
+          {/* ℹ️ Extra Info */}
           <hr className="mt-10 sm:w-4/5" />
           <div className="text-sm text-gray-500 mt-6 flex flex-col gap-2">
             <p>✅ 100% Original product.</p>
@@ -125,7 +136,7 @@ const Product = () => {
         </div>
       </div>
 
-      {/* ------------- RELATED PRODUCTS -------------------------- */}
+      {/* ------------- RELATED PRODUCTS ---------------- */}
       <div className="mt-16">
         <RelatedProduct
           category={productData.category}

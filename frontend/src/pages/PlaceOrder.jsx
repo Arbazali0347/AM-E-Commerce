@@ -28,23 +28,30 @@ const PlaceOrder = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    console.log("🛒 Cart Items before placing order:", cartItems);
     const finalAmount = totalAmount + totalDelivery;
     try {
       let orderItems = [];
+
       for (const productId in cartItems) {
-        if (cartItems[productId] > 0) {
-          const itemInfo = structuredClone(products.find(product => product._id === productId));
-          if (itemInfo) {
-            itemInfo.quantity = cartItems[productId];
-            orderItems.push(itemInfo);
-          }
-        }
+        const itemInfo = products.find(product => product._id === productId);
+        if (!itemInfo) continue;
+
+        const flavorQuantities = cartItems[productId];  // { apple: 2, mango: 4, ... }
+        const totalQuantity = Object.values(flavorQuantities).reduce((sum, q) => sum + q, 0);
+
+        // clone original product object
+        const itemClone = structuredClone(itemInfo);
+        itemClone.flavors = flavorQuantities;      // 👈 sare flavors ek object mein
+        itemClone.totalQuantity = totalQuantity;   // 👈 total quantity sab flavors ka
+        orderItems.push(itemClone);
       }
       let orderData = {
         address: formData,
         items: orderItems,
         amount: finalAmount,
-      }
+      };
+
 
       switch (method) {
         // API CALL FOR COD

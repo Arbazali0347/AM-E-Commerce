@@ -18,13 +18,20 @@ const ShopContextProvider = (props) => {
     const [token, setToken] = useState("");
 
     // ✅ addToCart without size
+    // ✅ addToCart with flavor
     const addToCart = async (itemId, flavor) => {
         let cartData = structuredClone(cartItems);
 
-        if (cartData[itemId]) {
-            cartData[itemId] += 1;
+        // Agar product ka object hi nahi hai, to bana do
+        if (!cartData[itemId]) {
+            cartData[itemId] = {};
+        }
+
+        // Flavor ka count update karo
+        if (cartData[itemId][flavor]) {
+            cartData[itemId][flavor] += 1;
         } else {
-            cartData[itemId] = 1;
+            cartData[itemId][flavor] = 1;
         }
 
         setCartItems(cartData);
@@ -34,7 +41,7 @@ const ShopContextProvider = (props) => {
             try {
                 await axios.post(
                     backendUrl + "/api/cart/add",
-                    { itemId }, // 👈 size remove
+                    { itemId, flavor }, // 👈 flavor bhi send
                     { headers: { token } }
                 );
             } catch (error) {
@@ -45,28 +52,34 @@ const ShopContextProvider = (props) => {
         }
     };
 
+
     // ✅ count total items without size
     const getCartCount = () => {
         let totalCount = 0;
         for (const itemId in cartItems) {
-            if (cartItems[itemId] > 0) {
-                totalCount += cartItems[itemId];
+            for (const flavor in cartItems[itemId]) {
+                totalCount += cartItems[itemId][flavor];
             }
         }
         return totalCount;
     };
 
     // ✅ update quantity without size
-    const updateQuantity = async (itemId, quantity) => {
+    // ✅ update quantity with flavor
+    const updateQuantity = async (itemId, flavor, quantity) => {
         let cartData = structuredClone(cartItems);
-        cartData[itemId] = quantity;
+
+        if (cartData[itemId] && cartData[itemId][flavor] !== undefined) {
+            cartData[itemId][flavor] = quantity;
+        }
+
         setCartItems(cartData);
 
         if (token) {
             try {
                 await axios.post(
                     backendUrl + "/api/cart/update",
-                    { itemId, quantity }, // 👈 size remove
+                    { itemId, flavor, quantity }, // 👈 flavor bhi send
                     { headers: { token } }
                 );
             } catch (error) {
@@ -75,37 +88,35 @@ const ShopContextProvider = (props) => {
         }
     };
 
-    // ✅ get total cart amount without size
+
+    // ✅ get total cart amount with flavor
     const getCartAmount = () => {
         let totalAmount = 0;
-        let totalDelivery = 0;
-        let hasPaidDelivery = false; // track karenge koi item freeDelivery nahi hai kya
+        let hasPaidDelivery = false;
 
         for (const itemId in cartItems) {
             const itemInfo = products.find((p) => p._id === itemId);
             if (!itemInfo) continue;
 
-            const qty = Number(cartItems[itemId] || 0);
-            const price = Number(itemInfo.price || 0);
+            for (const flavor in cartItems[itemId]) {
+                const qty = Number(cartItems[itemId][flavor] || 0);
+                const price = Number(itemInfo.price || 0);
 
-            if (qty > 0) {
-                // product ka price
-                totalAmount += price * qty;
-
-                // check agar freeDelivery nahi hai
-                if (!itemInfo.freeDelivery) {
-                    hasPaidDelivery = true;
+                if (qty > 0) {
+                    totalAmount += price * qty;
+                    if (!itemInfo.freeDelivery) {
+                        hasPaidDelivery = true;
+                    }
                 }
             }
         }
 
-        // sirf ek hi dafa 300 charge hoga agar koi item freeDelivery wala na ho
-        if (hasPaidDelivery) {
-            totalDelivery = 300;
-        }
-
-        return { totalAmount, totalDelivery };
+        return {
+            totalAmount,
+            totalDelivery: hasPaidDelivery ? 300 : 0,
+        };
     };
+
 
 
     const fetchProducts = async () => {

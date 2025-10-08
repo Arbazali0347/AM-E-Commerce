@@ -10,7 +10,7 @@ const UpdateProduct = ({ token }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  // States
+  // 📝 States
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -19,18 +19,16 @@ const UpdateProduct = ({ token }) => {
   const [subCategory, setSubCategory] = useState("500ml");
   const [bestseller, setBestseller] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(false);
-  const [flavors, setFlavors] = useState([]); // 👈 Array rakha hai
+  const [flavors, setFlavors] = useState(null); // 👈 Array rakha hai flavors ka
 
-  // Images
+  // 🖼️ Images
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
-
-  // Existing image URLs
   const [existingImages, setExistingImages] = useState([]);
 
-  // Fetch product data
+  // 📌 Product data fetch
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -45,7 +43,7 @@ const UpdateProduct = ({ token }) => {
           setSubCategory(product.subCategory || "500ml");
           setBestseller(product.bestseller || false);
           setFreeDelivery(product.freeDelivery || false);
-          setFlavors(product.flavors || []); // 👈 flavors array set kiya
+          setFlavors(product.flavors || []); // 👈 flavors set kiya
           setExistingImages(product.image || []);
         } else {
           toast.error("Product not found!");
@@ -61,7 +59,7 @@ const UpdateProduct = ({ token }) => {
     fetchProduct();
   }, [id]);
 
-  // Submit handler
+  // ✅ Product update submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -76,14 +74,18 @@ const UpdateProduct = ({ token }) => {
       formData.append("bestseller", bestseller);
       formData.append("freeDelivery", freeDelivery);
 
-      // Flavors array bhejna
+      // ✅ Flavors array bhejna (empty hone par bhi)
       if (flavors.length > 0) {
+        // Agar kuch flavors select kiye hain to unko individually bhejna
         flavors.forEach((flavor) => {
           formData.append("flavors", flavor);
         });
+      } else {
+        // 👇 Yeh important hai — agar flavors remove kiye hain to empty array bhejna
+        formData.append("flavors", JSON.stringify(""));
       }
 
-      // Images
+      // 🖼️ Images
       image1 && formData.append("image1", image1);
       image2 && formData.append("image2", image2);
       image3 && formData.append("image3", image3);
@@ -111,14 +113,15 @@ const UpdateProduct = ({ token }) => {
 
   if (loading) return <p className="text-center p-5">Loading...</p>;
 
-  // Available flavors (jo tu select karna chahta hai)
-  const availableFlavors = ["Dove velvet", "lux fusion", "aqua wave"]
+  // 🍧 Available flavors list
+  const availableFlavors = ["Dove velvet", "lux fusion", "aqua wave"];
+
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Update Product</h2>
       <form onSubmit={handleSubmit} className="grid gap-4">
 
-        {/* Images */}
+        {/* 🖼️ Image upload */}
         <div>
           <p className="mb-2">Upload Images</p>
           <div className="flex gap-2">
@@ -149,7 +152,7 @@ const UpdateProduct = ({ token }) => {
           </div>
         </div>
 
-        {/* Name */}
+        {/* 📝 Product name */}
         <div className="w-full">
           <p className="mb-2">Product name</p>
           <input
@@ -162,7 +165,7 @@ const UpdateProduct = ({ token }) => {
           />
         </div>
 
-        {/* Description */}
+        {/* 📝 Description */}
         <div className="w-full">
           <p className="mb-2">Product description</p>
           <textarea
@@ -174,7 +177,7 @@ const UpdateProduct = ({ token }) => {
           />
         </div>
 
-        {/* Flavors Selection */}
+        {/* 🍧 Flavors selection */}
         <div className="w-full">
           <p className="mb-2">Select Flavors</p>
           <div className="flex flex-wrap gap-3">
@@ -200,7 +203,7 @@ const UpdateProduct = ({ token }) => {
           </div>
         </div>
 
-        {/* Category, SubCategory, Price */}
+        {/* 🧠 Category / SubCategory / Price */}
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:gap-8">
           <div>
             <p className="mb-2">Product category</p>
@@ -250,7 +253,7 @@ const UpdateProduct = ({ token }) => {
           </div>
         </div>
 
-        {/* Bestseller */}
+        {/* ⭐ Bestseller */}
         <div className="flex gap-2 mt-2">
           <input
             onChange={() => setBestseller((prev) => !prev)}
@@ -263,7 +266,7 @@ const UpdateProduct = ({ token }) => {
           </label>
         </div>
 
-        {/* Free Delivery */}
+        {/* 🚚 Free Delivery */}
         <div className="flex gap-2 mt-2">
           <input
             onChange={() => setFreeDelivery((prev) => !prev)}
@@ -276,7 +279,7 @@ const UpdateProduct = ({ token }) => {
           </label>
         </div>
 
-        {/* Submit */}
+        {/* 💾 Submit */}
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4"

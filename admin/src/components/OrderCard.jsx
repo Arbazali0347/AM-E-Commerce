@@ -20,40 +20,64 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
             {showDelete && <th className="px-4 py-2 border w-[100px]">Action</th>}
           </tr>
         </thead>
+
         <tbody>
           {orders.map((order, index) => (
             <tr key={index} className="hover:bg-gray-50">
+              {/* 🆔 Order ID */}
               <td className="px-4 py-2 border text-pink-700 font-medium whitespace-nowrap">
                 #10{order.trackingId}
               </td>
+
+              {/* 👤 Customer */}
               <td className="px-4 py-2 border whitespace-nowrap">
                 {order.address.firstName} {order.address.lastName}
                 <br />
                 <span className="text-xs text-gray-500">{order.address.phone}</span>
               </td>
 
-              {/* City Column - scrollable */}
+              {/* 🌆 City */}
               <td className="px-4 py-2 border max-w-[120px] overflow-x-auto whitespace-nowrap">
                 <div className="inline-block">{order.address.city || "—"}</div>
               </td>
 
-              {/* Address Column - scrollable */}
+              {/* 🏠 Address */}
               <td className="px-4 py-2 border min-w-[250px]">
                 <div className="inline-block">{order.address.address || "—"}</div>
               </td>
 
-              {/* Items */}
+              {/* 🛍️ Items with flavors */}
               <td className="px-4 py-2 border max-w-[500px] overflow-x-auto min-w-[300px] ">
                 <div className="inline-block">
                   {order.items.map((item, idx) => (
-                    <div key={idx}>
-                      {item.name}<span className="text-red-700">  x  {item.quantity} </span>
+                    <div key={idx} className="mb-2">
+                      {/* Product Name */}
+                      <div className="font-medium">{item.name}</div>
+
+                      {/* Flavor List */}
+                      {item.flavors && Object.keys(item.flavors).length > 0 ? (
+                        <div className="ml-3 text-gray-600 text-xs">
+                          {Object.entries(item.flavors).map(([flavor, qty]) => (
+                            <div key={flavor}>
+                              {flavor}: {qty}
+                            </div>
+                          ))}
+                          <div className="font-medium mt-1">
+                            Total: {item.totalQuantity} items
+                          </div>
+                        </div>
+                      ) : (
+                        // If no flavors — fallback
+                        <div className="ml-3 text-gray-600 text-xs">
+                          Quantity: {item.quantity}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
               </td>
 
-              {/* Payment */}
+              {/* 💳 Payment */}
               <td className="px-4 py-2 border whitespace-nowrap">
                 {order.paymentMethod} <br />
                 <span
@@ -65,18 +89,18 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
                 </span>
               </td>
 
-              {/* Date */}
+              {/* 📅 Date */}
               <td className="px-4 py-2 border whitespace-nowrap">
                 {new Date(order.date).toLocaleDateString()}
               </td>
 
-              {/* Amount */}
+              {/* 💰 Amount */}
               <td className="px-4 py-2 border whitespace-nowrap">
                 {currency}
                 {order.amount}
               </td>
 
-              {/* Status */}
+              {/* 📌 Status */}
               <td className="px-4 py-2 border whitespace-nowrap">
                 {showStatus ? (
                   <select
@@ -95,7 +119,7 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
                 )}
               </td>
 
-              {/* Delete */}
+              {/* ❌ Delete */}
               {showDelete && (
                 <td className="px-4 py-2 border text-center whitespace-nowrap">
                   <button
@@ -111,30 +135,44 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
         </tbody>
       </table>
 
-      {/* 📱 Mobile View same as pehle */}
+      {/* 📱 Mobile View */}
       <div className="sm:hidden space-y-4">
         {orders.map((order, index) => (
           <div key={index} className="border p-3 rounded shadow-sm text-sm">
             <p className="text-pink-700 font-medium">#10{order.trackingId}</p>
             <p>
-              <strong>Customer:</strong> {order.address.firstName}{" "}
-              {order.address.lastName} <br />
+              <strong>Customer:</strong> {order.address.firstName} {order.address.lastName} <br />
               <span className="text-xs text-gray-500">{order.address.phone}</span>
             </p>
+            <p><strong>City:</strong> {order.address.city || "—"}</p>
+            <p><strong>Address:</strong> {order.address.address || "—"}</p>
+
+            {/* 🛍️ Mobile Items with Flavors */}
             <p>
-              <strong>City:</strong> {order.address.city || "—"}
-            </p>
-            <p>
-              <strong>Address:</strong> {order.address.address || "—"}
-            </p>
-            <p>
-              <strong>Items:</strong>{" "}
+              <strong>Items:</strong><br />
               {order.items.map((item, idx) => (
-                <span key={idx}>
-                  {item.name} x {item.quantity}{" "}
-                </span>
+                <div key={idx} className="ml-2">
+                  <div className="font-medium">{item.name}</div>
+                  {item.flavors && Object.keys(item.flavors).length > 0 ? (
+                    <div className="ml-2 text-xs">
+                      {Object.entries(item.flavors).map(([flavor, qty]) => (
+                        <div key={flavor}>
+                          {flavor}: {qty}
+                        </div>
+                      ))}
+                      <div className="font-medium mt-1">
+                        Total: {item.totalQuantity} items
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="ml-2 text-xs">
+                      Quantity: {item.quantity}
+                    </div>
+                  )}
+                </div>
               ))}
             </p>
+
             <p>
               <strong>Payment:</strong> {order.paymentMethod} –{" "}
               {order.payment ? (
@@ -143,13 +181,8 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
                 <span className="text-red-500">Pending</span>
               )}
             </p>
-            <p>
-              <strong>Date:</strong> {new Date(order.date).toLocaleDateString()}
-            </p>
-            <p>
-              <strong>Amount:</strong> {currency}
-              {order.amount}
-            </p>
+            <p><strong>Date:</strong> {new Date(order.date).toLocaleDateString()}</p>
+            <p><strong>Amount:</strong> {currency}{order.amount}</p>
             <p>
               <strong>Status:</strong>{" "}
               {showStatus ? (
@@ -168,6 +201,7 @@ const OrderTable = ({ orders, statusHandler, onDelete, showStatus = true, showDe
                 order.status
               )}
             </p>
+
             {showDelete && (
               <button
                 onClick={() => onDelete(order._id)}
