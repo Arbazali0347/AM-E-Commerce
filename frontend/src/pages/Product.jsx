@@ -22,7 +22,14 @@ const Product = () => {
     });
   };
 
+  const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
   useEffect(() => {
+    scrollToTop();
     fetchProductData();
   }, [productId, products]);
 
