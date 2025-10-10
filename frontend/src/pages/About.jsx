@@ -12,11 +12,6 @@ const About = () => {
       </div>
 
       <div className="my-12 flex flex-col md:flex-row gap-12 items-center md:items-start px-6 md:px-16">
-        <img
-          src={assets.about_img}
-          className="w-full md:max-w-[420px] rounded-2xl shadow-lg object-cover"
-          alt="About AM Chemicals"
-        />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-700 text-base leading-relaxed">
           <p>
             Welcome to <b>AM Chemicals</b>, where we believe in the power of a clean home. We're passionate about providing high-quality, effective, and eco-friendly cleaning products that make your life easier and your home a healthier place.

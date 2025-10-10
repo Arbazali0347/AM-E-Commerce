@@ -37,7 +37,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-8 text-sm text-gray-700">
-          {["/", "/shop", "/about", "/contect"].map((path, i) => (
+          {["/", "/shop", "/about", "/contact"].map((path, i) => (
             <NavLink
               key={i}
               to={path}
@@ -145,7 +145,7 @@ const Navbar = () => {
             <p className="font-medium">Close</p>
           </div>
 
-          {["/", "/collection", "/about", "/contect"].map((path, i) => (
+          {["/", "/collection", "/about", "/contact"].map((path, i) => (
             <NavLink
               key={i}
               onClick={() => setVisible(false)}
