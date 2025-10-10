@@ -5,13 +5,13 @@ import NewsletterBox from '../components/NewsletterBox';
 
 const About = () => {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 text-center">
       {/* ABOUT US */}
       <div className="text-3xl text-center pt-10 border-t">
         <Title text1={"ABOUT"} text2={"US"} />
       </div>
 
-      <div className="my-12 flex flex-col md:flex-row gap-12 items-center md:items-start px-6 md:px-16 text-center">
+      <div className="my-12 flex flex-col md:flex-row gap-12 items-center justify-center md:items-start px-6 md:px-16">
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-700 text-base leading-relaxed">
           <p>
             Welcome to <b>AM Chemicals</b>, where we believe in the power of a clean home. We're passionate about providing high-quality, effective, and eco-friendly cleaning products that make your life easier and your home a healthier place.
