@@ -23,11 +23,11 @@ const Product = () => {
   };
 
   const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    };
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   useEffect(() => {
     scrollToTop();
     fetchProductData();
@@ -120,9 +120,12 @@ const Product = () => {
           )}
 
           {/* 📜 Description */}
-          <p className="mt-5 text-gray-600 leading-relaxed md:w-4/5">
-            {productData.description}
-          </p>
+          {productData.description && (
+            <div
+              className="mt-5 text-gray-600 leading-relaxed md:w-4/5 whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: productData.description }}
+            ></div>
+          )}
 
           {/* 🛒 Add to Cart */}
           <button

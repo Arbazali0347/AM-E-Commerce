@@ -145,7 +145,7 @@ const Navbar = () => {
             <p className="font-medium">Close</p>
           </div>
 
-          {["/", "/collection", "/about", "/contact"].map((path, i) => (
+          {["/", "/shop", "/about", "/contact"].map((path, i) => (
             <NavLink
               key={i}
               onClick={() => setVisible(false)}

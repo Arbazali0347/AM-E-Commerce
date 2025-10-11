@@ -10,7 +10,7 @@ const UpdateProduct = ({ token }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-  // 📝 States
+  // 📝 Product Fields
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -19,16 +19,14 @@ const UpdateProduct = ({ token }) => {
   const [subCategory, setSubCategory] = useState("500ml");
   const [bestseller, setBestseller] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(false);
-  const [flavors, setFlavors] = useState(null); // 👈 Array rakha hai flavors ka
+  const [flavors, setFlavors] = useState([]);
 
-  // 🖼️ Images
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [image3, setImage3] = useState(null);
-  const [image4, setImage4] = useState(null);
-  const [existingImages, setExistingImages] = useState([]);
+  // 🖼️ Images States
+  const [images, setImages] = useState([null, null, null, null]); // new selected files
+  const [existingImages, setExistingImages] = useState([]); // old images from DB
+  const [removedImages, setRemovedImages] = useState([false, false, false, false]); // track removed
 
-  // 📌 Product data fetch
+  // 📌 Fetch product data
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -43,7 +41,7 @@ const UpdateProduct = ({ token }) => {
           setSubCategory(product.subCategory || "500ml");
           setBestseller(product.bestseller || false);
           setFreeDelivery(product.freeDelivery || false);
-          setFlavors(product.flavors || []); // 👈 flavors set kiya
+          setFlavors(product.flavors || []);
           setExistingImages(product.image || []);
         } else {
           toast.error("Product not found!");
@@ -59,7 +57,29 @@ const UpdateProduct = ({ token }) => {
     fetchProduct();
   }, [id]);
 
-  // ✅ Product update submit
+  // 🧠 Function: remove image (shift left after removal)
+  const handleRemoveImage = (index) => {
+    const newExisting = [...existingImages];
+    const newImages = [...images];
+
+    // 🧠 Remove the clicked image
+    newExisting.splice(index, 1);
+    newImages.splice(index, 1);
+
+    // 🧠 Fill remaining slots with null to keep length 4
+    while (newExisting.length < 4) newExisting.push(null);
+    while (newImages.length < 4) newImages.push(null);
+
+    setExistingImages(newExisting);
+    setImages(newImages);
+
+    // ✅ mark this index as removed (so backend deletes it)
+    const removedCopy = [...removedImages];
+    removedCopy[index] = true;
+    setRemovedImages(removedCopy);
+  };
+
+  // ✅ Submit updated product
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -74,22 +94,27 @@ const UpdateProduct = ({ token }) => {
       formData.append("bestseller", bestseller);
       formData.append("freeDelivery", freeDelivery);
 
-      // ✅ Flavors array bhejna (empty hone par bhi)
-      if (flavors.length > 0) {
-        // Agar kuch flavors select kiye hain to unko individually bhejna
+      // ✅ Flavors array bhejna (empty hone par bhi clear karne ke liye)
+      if (flavors && flavors.length > 0) {
         flavors.forEach((flavor) => {
           formData.append("flavors", flavor);
         });
       } else {
-        // 👇 Yeh important hai — agar flavors remove kiye hain to empty array bhejna
-        formData.append("flavors", JSON.stringify(""));
+        // ⚠️ Agar flavors empty hain to explicitly empty array bhejna
+        formData.append("flavors", JSON.stringify([]));
       }
 
-      // 🖼️ Images
-      image1 && formData.append("image1", image1);
-      image2 && formData.append("image2", image2);
-      image3 && formData.append("image3", image3);
-      image4 && formData.append("image4", image4);
+      // 🖼️ Add images (only if new selected)
+      images.forEach((img, idx) => {
+        if (img) {
+          formData.append(`image${idx + 1}`, img);
+        }
+      });
+
+      // 🚨 Send which images were removed
+      removedImages.forEach((removed, idx) => {
+        formData.append(`removeImage${idx + 1}`, removed.toString());
+      });
 
       const { data } = await axios.post(
         `${backendUrl}/api/product/update/${id}`,
@@ -113,7 +138,6 @@ const UpdateProduct = ({ token }) => {
 
   if (loading) return <p className="text-center p-5">Loading...</p>;
 
-  // 🍧 Available flavors list
   const availableFlavors = ["Dove velvet", "lux fusion", "aqua wave"];
 
   return (
@@ -121,33 +145,45 @@ const UpdateProduct = ({ token }) => {
       <h2 className="text-2xl font-semibold mb-4">Update Product</h2>
       <form onSubmit={handleSubmit} className="grid gap-4">
 
-        {/* 🖼️ Image upload */}
+        {/* 🖼️ Image Upload with ❌ remove */}
         <div>
           <p className="mb-2">Upload Images</p>
           <div className="flex gap-2">
             {[0, 1, 2, 3].map((i) => (
-              <label key={i}>
-                <img
-                  className="w-20 h-20 object-cover border"
-                  src={
-                    [image1, image2, image3, image4][i]
-                      ? URL.createObjectURL([image1, image2, image3, image4][i])
-                      : existingImages[i] || assets.upload_area
-                  }
-                  alt=""
-                />
-                <input
-                  type="file"
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (i === 0) setImage1(file);
-                    if (i === 1) setImage2(file);
-                    if (i === 2) setImage3(file);
-                    if (i === 3) setImage4(file);
-                  }}
-                />
-              </label>
+              <div key={i} className="relative">
+                <label>
+                  <img
+                    className="w-20 h-20 object-cover border rounded"
+                    src={
+                      images[i]
+                        ? URL.createObjectURL(images[i])
+                        : existingImages[i] || assets.upload_area
+                    }
+                    alt=""
+                  />
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      const newImages = [...images];
+                      newImages[i] = file;
+                      setImages(newImages);
+                    }}
+                  />
+                </label>
+
+                {/* ❌ Remove Button */}
+                {(existingImages[i] || images[i]) && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(i)}
+                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -9,7 +9,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
   return (
     <Link
       to={`/product/${id}`}
-      className="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300"
+      className="block bg-white rounded-xl transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -18,7 +18,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
         <img
           src={image[0]}
           alt={name}
-          className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[3000ms] ease-in-out ${
+          className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[2000ms] ease-in-out ${
             hovered && image[1]
               ? "opacity-0 scale-110"
               : hovered
@@ -52,7 +52,7 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
       </div>
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col justify-between min-h-36 sm:min-h-32">
+      <div className="pt-4 pb-8 flex flex-col justify-between min-h-36 sm:min-h-32">
         <p className="text-gray-900 font-medium text-sm sm:text-base leading-snug break-words">
           {name}
         </p>
