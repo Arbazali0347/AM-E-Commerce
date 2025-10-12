@@ -10,7 +10,7 @@ const BestSeller = () => {
   
   useEffect(() => {
     const bestProduct = products.filter((item) => (item.bestseller));
-    setBestSeller(bestProduct.slice(0, 5))
+    setBestSeller(bestProduct);
     
   }, [products])
   
@@ -24,7 +24,7 @@ const BestSeller = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         {loading
           ? // 🦴 Skeleton Loader Cards (Facebook style)
-            Array.from({ length: 5 }).map((_, i) => (
+            Array.from({ length: 10 }).map((_, i) => (
               <div
                 key={i}
                 className="bg-white rounded-xl shadow-sm p-2 animate-pulse"

@@ -10,7 +10,7 @@ const Saving = () => {
 
   useEffect(() => {
     const bestProduct = products.filter((item) => item.category === "SavingBundles"? true : false);
-    setSaving(bestProduct.slice(0, 5))
+    setSaving(bestProduct)
   }, [products])
   
   return (

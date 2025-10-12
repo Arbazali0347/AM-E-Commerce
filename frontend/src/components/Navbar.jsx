@@ -42,8 +42,7 @@ const Navbar = () => {
               key={i}
               to={path}
               className={({ isActive }) =>
-                `relative flex flex-col items-center transition duration-300 hover:text-black ${
-                  isActive ? "text-black font-semibold" : "text-gray-600"
+                `relative flex flex-col items-center transition duration-300 hover:text-black ${isActive ? "text-black font-semibold" : "text-gray-600"
                 }`
               }
             >
@@ -58,7 +57,7 @@ const Navbar = () => {
         <div className="flex items-center gap-6">
           {/* Search */}
           <img
-            onClick={() => setShowSearch(true)}
+            onClick={() => setShowSearch((prev) => !prev)}   // 🟡 Toggle kar diya
             src={assets.search_icon}
             alt="Search"
             className="w-6 cursor-pointer hover:scale-110 transition"
@@ -128,9 +127,8 @@ const Navbar = () => {
 
       {/* Sidebar Menu (Mobile) */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 z-50 ${
-          visible ? "w-3/4 sm:w-1/2" : "w-0"
-        }`}
+        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 z-50 ${visible ? "w-3/4 sm:w-1/2" : "w-0"
+          }`}
       >
         <div className="flex flex-col text-gray-700 h-full">
           <div
@@ -150,10 +148,9 @@ const Navbar = () => {
               key={i}
               onClick={() => setVisible(false)}
               className={({ isActive }) =>
-                `py-3 pl-6 border-b transition duration-300 ${
-                  isActive
-                    ? "bg-black text-white font-semibold"
-                    : "hover:bg-gray-100"
+                `py-3 pl-6 border-b transition duration-300 ${isActive
+                  ? "bg-black text-white font-semibold"
+                  : "hover:bg-gray-100"
                 }`
               }
               to={path}
