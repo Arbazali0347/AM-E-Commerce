@@ -12,6 +12,8 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
       className="block bg-white rounded-xl transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onTouchStart={() => setHovered(true)}
+      onTouchEnd={() => setHovered(false)}
     >
       {/* Image Section */}
       <div className="relative overflow-hidden rounded-t-xl h-56">

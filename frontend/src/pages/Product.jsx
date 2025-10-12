@@ -10,6 +10,7 @@ const Product = () => {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [selectedFlavor, setSelectedFlavor] = useState("");
+  const [isFading, setIsFading] = useState(false); // 🌟 new state for fade transition
 
   // 🟡 Product fetch from context
   const fetchProductData = () => {
@@ -28,6 +29,7 @@ const Product = () => {
       behavior: "smooth",
     });
   };
+
   useEffect(() => {
     scrollToTop();
     fetchProductData();
@@ -42,13 +44,19 @@ const Product = () => {
     }
   }, [productData]);
 
-  // 🧪 Debug flavor changes (optional)
-  useEffect(() => {
-    console.log("Selected Flavor:", selectedFlavor);
-  }, [selectedFlavor]);
+  // 🌀 Image change handler with fade effect
+  const handleImageChange = (newImage) => {
+    if (newImage !== image) {
+      setIsFading(true); // fade out
+      setTimeout(() => {
+        setImage(newImage);
+        setIsFading(false); // fade in
+      }, 250); // 250ms light transition
+    }
+  };
 
   return productData ? (
-    <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100 px-2 sm:px-8 lg:px-13">
+    <div className="border-t-2 pt-10 px-2 sm:px-8 lg:px-13">
       <div className="flex gap-12 sm:gap-16 flex-col sm:flex-row">
         {/* ---------------- Left Side (Images) ---------------- */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
@@ -56,7 +64,7 @@ const Product = () => {
           <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-auto justify-between sm:justify-normal sm:w-[18%] w-full gap-2 sm:gap-3">
             {productData.image.map((item, index) => (
               <img
-                onClick={() => setImage(item)}
+                onClick={() => handleImageChange(item)}
                 src={item}
                 alt=""
                 key={index}
@@ -66,12 +74,13 @@ const Product = () => {
             ))}
           </div>
 
-          {/* Main Image */}
+          {/* Main Image with Fade Transition */}
           <div className="w-full sm:w-[82%]">
             <img
               src={image}
               alt={productData.name}
-              className="w-full h-auto rounded-2xl shadow-lg border transition-transform duration-[3000ms] ease-in-out hover:scale-110"
+              className={`w-full h-auto rounded-2xl shadow-lg border transition-opacity duration-300 ease-in-out 
+                ${isFading ? "opacity-0" : "opacity-100"}`}
             />
           </div>
         </div>
@@ -94,6 +103,7 @@ const Product = () => {
             )}
           </div>
 
+          {/* 🧂 Flavor Selection */}
           {productData.flavors && productData.flavors.length > 0 && (
             <div className="mt-6">
               <h3 className="font-semibold mb-2">Select Flavor:</h3>
@@ -110,7 +120,6 @@ const Product = () => {
               </select>
             </div>
           )}
-          {/* 🟡 Agar flavors empty hain → ye block render hi nahi hoga, isliye [] bhi nahi dikhega */}
 
           {/* 🚚 Free Delivery Badge */}
           {productData.freeDelivery && (
