@@ -17,6 +17,8 @@ const addProduct = async (req, res) => {
         return result.secure_url;
       })
     )
+    const lastProduct = await productModel.findOne().sort({ order: -1 });
+    const nextOrder = lastProduct ? lastProduct.order + 1 : 1;
     const productData = {
       name,
       description,
@@ -28,8 +30,9 @@ const addProduct = async (req, res) => {
       bestseller: bestseller === "true" ? true : false,
       image: imageUrl,
       freeDelivery: freeDelivery,
-      date: Date.now()
-    }
+      date: Date.now(),
+      order: nextOrder, // 🆕 assign next order
+    };
 
     const product = new productModel(productData)
     await product.save()
@@ -134,13 +137,13 @@ const updateProduct = async (req, res) => {
 
 
 // function for add product
+// controllers/productController.js → listProduct()
 const listProduct = async (req, res) => {
   try {
-    const products = await productModel.find({})
-    res.json({ success: true, products })
+    const products = await productModel.find({}).sort({ order: 1 }); // 🆕 sort by order ascending
+    res.json({ success: true, products });
   } catch (error) {
     let message = "Something went wrong, please try again later.";
-    // Agar internet / network related issue hai
     if (
       error.name === "MongoNetworkError" ||
       error.message.includes("ECONNREFUSED") ||
@@ -149,10 +152,9 @@ const listProduct = async (req, res) => {
     ) {
       message = "Network issue! Please check your internet connection.";
     }
-    res.json({ success: false, message })
+    res.json({ success: false, message });
   }
-
-}
+};
 // function for add product
 const removeProduct = async (req, res) => {
   try {
@@ -192,4 +194,24 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
-export { listProduct, addProduct, removeProduct, singleProduct, updateProduct, getSingleProduct }
+// POST /api/product/reorder
+const reorderProducts = async (req, res) => {
+  try {
+    const { orders } = req.body;
+
+    if (!orders || !Array.isArray(orders)) {
+      return res.status(400).json({ success: false, message: "Orders array required" });
+    }
+
+    for (let ord of orders) {
+      await productModel.findByIdAndUpdate(ord.id, { order: ord.order });
+    }
+
+    return res.json({ success: true, message: "Order updated successfully" });
+  } catch (error) {
+    console.error("Reorder error:", error);
+    return res.status(500).json({ success: false, message: "Failed to update order" });
+  }
+};
+
+export { listProduct, addProduct, removeProduct, singleProduct, updateProduct, getSingleProduct, reorderProducts }

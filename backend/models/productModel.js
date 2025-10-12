@@ -1,3 +1,5 @@
+// models/productModel.js
+
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
@@ -8,10 +10,11 @@ const productSchema = new mongoose.Schema({
     image: { type: Array, required: true },
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    flavors: { type: [String], default: [] }, // ✅ New field for flavors
+    flavors: { type: [String], default: [] },
     bestseller: { type: Boolean },
     freeDelivery: { type: Boolean, default: false },
-    date: { type: Number, required: true }
+    date: { type: Number, required: true },
+    order: { type: Number, default: 0 }, // 🆕 Reorder field
 });
 
 const productModel = mongoose.models.product || mongoose.model("product", productSchema);
