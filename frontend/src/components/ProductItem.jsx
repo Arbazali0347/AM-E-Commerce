@@ -20,21 +20,19 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
         <img
           src={image[0]}
           alt={name}
-          className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[2000ms] ease-in-out ${
-            hovered && image[1]
+          className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[2000ms] ease-in-out ${hovered && image[1]
               ? "opacity-0 scale-110"
               : hovered
-              ? "opacity-100 scale-110"
-              : "opacity-100 scale-100"
-          }`}
+                ? "opacity-100 scale-110"
+                : "opacity-100 scale-100"
+            }`}
         />
         {image[1] && (
           <img
             src={image[1]}
             alt={name}
-            className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[1200ms] ease-in-out ${
-              hovered ? "opacity-100 scale-110" : "opacity-0 scale-100"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transform transition-all duration-[1200ms] ease-in-out ${hovered ? "opacity-100 scale-110" : "opacity-0 scale-100"
+              }`}
           />
         )}
 
@@ -58,14 +56,13 @@ const ProductItem = ({ id, image, name, price, oldPrice, discount, freeDelivery 
         <p className="text-gray-900 font-medium text-sm sm:text-base leading-snug break-words">
           {name}
         </p>
-
-        <div className="flex items-center gap-2 mt-auto flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {oldPrice && (
-            <p className="text-gray-500 text-xs sm:text-sm line-through">
+            <p className="text-gray-500 text-sm sm:text-base line-through">
               {currency}{oldPrice}
             </p>
           )}
-          <p className="text-red-700 text-xs sm:text-lg break-words">
+          <p className="text-red-700 text-base sm:text-lg font-semibold break-words">
             {currency}{price}
           </p>
         </div>
