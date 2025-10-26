@@ -1,74 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- 🏠 Home Page -->
   <url>
-    <loc>https://amchamical.store/</loc>
-    <changefreq>daily</changefreq>
+    <loc>https://amchemical.store/</loc>
     <priority>1.0</priority>
   </url>
 
-  <!-- ➕ Add Product Page -->
   <url>
-    <loc>https://amchamical.store/add</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 📝 Product List Page -->
-  <url>
-    <loc>https://amchamical.store/list</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/add</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 📦 Orders Page -->
   <url>
-    <loc>https://amchamical.store/orders</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- ✅ Delivered Page -->
-  <url>
-    <loc>https://amchamical.store/delivered</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/list</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 📦 Packing Page -->
   <url>
-    <loc>https://amchamical.store/packing</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/orders</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 📤 Placed Orders Page -->
   <url>
-    <loc>https://amchamical.store/placed</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/delivered</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 🚚 Out of Delivery Page -->
   <url>
-    <loc>https://amchamical.store/out-of-delivery</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/packing</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 🏃‍♂️ Shipping Page -->
   <url>
-    <loc>https://amchamical.store/shipping</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://amchemical.store/placed</loc>
     <priority>0.8</priority>
   </url>
 
-  <!-- 💰 Bulk Deals Page -->
   <url>
-    <loc>https://amchamical.store/bulk-deals</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://amchemical.store/out-of-delivery</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://amchemical.store/shipping</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://amchemical.store/bulk-deals</loc>
+    <priority>0.8</priority>
   </url>
 
 </urlset>
